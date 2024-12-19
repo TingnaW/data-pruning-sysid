@@ -1,31 +1,22 @@
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "fastcan",
-#     "matplotlib",
-#     "nonlinear-benchmarks",
-# ]
-#
-# [tool.uv.sources]
-# fastcan = { git = "https://github.com/scikit-learn-contrib/fastcan" }
-# ///
+"""Generate PCA results"""
 
+import click
+import matplotlib.pyplot as plt
+import nonlinear_benchmarks
 import numpy as np
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.decomposition import PCA
-import nonlinear_benchmarks
-import matplotlib.pyplot as plt
 
-from utils import get_narx_terms
+from utils import get_dual_stable_equilibria_data, get_narx_terms
 
 
-def _plot_pca(u, y, figure_name):
-    poly_terms, _ = get_narx_terms(u, y)
+def _plot_pca(u, y, n_sample, figure_name):
+    poly_terms, y, _ = get_narx_terms(u, y)
     pca = PCA(2).fit(poly_terms)
     pcs_all = pca.transform(poly_terms)
 
     kmeans = MiniBatchKMeans(
-        n_clusters=100,
+        n_clusters=n_sample,
         random_state=0,
         batch_size=6,
         n_init="auto",
@@ -34,7 +25,7 @@ def _plot_pca(u, y, figure_name):
     pcs_fastcan = pca.transform(atoms)
 
     rng = np.random.default_rng(123)
-    ids_random = rng.choice(y.size, 100, replace=False)
+    ids_random = rng.choice(y.size, n_sample, replace=False)
     pcs_random = pca.transform(poly_terms[ids_random])
 
     plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=5)
@@ -45,16 +36,28 @@ def _plot_pca(u, y, figure_name):
     plt.legend(["All data", "FastCan pruned", "Random pruned"])
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
+    print("Image " + figure_name + " has been generated.")
 
 
-def main() -> None:
-    train_val, _ = nonlinear_benchmarks.EMPS()
-    train_val_u, train_val_y = train_val
-    _plot_pca(train_val_u, train_val_y, "pca_emps.png")
-
-    train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
-    train_val_u, train_val_y = train_val
-    _plot_pca(train_val_u, train_val_y, "pca_whbm.png")
+@click.command()
+@click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
+def main(dataset) -> None:
+    match dataset:
+        case "dsed":
+            train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
+            _plot_pca(train_val_u, train_val_y, 30, "pca_dsed.png")
+        case "emps":
+            train_val, _ = nonlinear_benchmarks.EMPS()
+            train_val_u, train_val_y = train_val
+            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png")
+        case "whbm":
+            train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
+            train_val_u, train_val_y = train_val
+            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png")
+        case _:
+            raise NameError(
+                "The dataset is not supported. Please choose from: dsed, emps, whbm"
+            )
 
 
 if __name__ == "__main__":

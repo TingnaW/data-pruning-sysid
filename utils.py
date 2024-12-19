@@ -1,11 +1,51 @@
 """Utils functions."""
 
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.cluster import MiniBatchKMeans
-
 from fastcan import minibatch
-from fastcan.narx import make_time_shift_features, make_poly_features, make_narx
+from fastcan.narx import (
+    _mask_missing_value,
+    make_narx,
+    make_poly_features,
+    make_time_shift_features,
+)
+from scipy.integrate import odeint
+from sklearn.cluster import MiniBatchKMeans
+from sklearn.linear_model import LinearRegression
+
+
+def get_dual_stable_equilibria_data(auto=False):
+    """Get dual stable equilibria data."""
+
+    def _nonautonomous_dual_stable_equilibria(y, t):
+        y1, y2 = y
+        u = 0.1 * np.cos(0.2 * np.pi * t)
+        dydt = [y2, -(y1**3) - y1**2 + y1 - y2 + u]
+        return dydt
+
+    def _autonomous_dual_stable_equilibria(y, t):
+        y1, y2 = y
+        dydt = [y2, -(y1**3) - y1**2 + y1 - y2]
+        return dydt
+
+    if auto:
+        func = _autonomous_dual_stable_equilibria
+    else:
+        func = _nonautonomous_dual_stable_equilibria
+    n_samples = 100
+    x0 = np.linspace(0, 2, 10)
+    n_init = len(x0)
+    y0_y = np.cos(np.pi * x0)
+    y0_x = np.sin(np.pi * x0)
+    y0 = np.c_[y0_x, y0_y]
+    t = np.linspace(0, 10, n_samples)
+    sol = np.zeros((n_init, n_samples, 2))
+    u = np.zeros(0)
+    y = np.zeros(0)
+    for i in range(n_init):
+        sol[i] = odeint(func, y0[i], t)
+        u = np.r_[u, 0.1 * np.cos(0.2 * np.pi * t), np.nan]
+        y = np.r_[y, sol[i, :, 0], np.nan]
+    return u, y, sol
 
 
 def get_narx_terms(u, y):
@@ -44,7 +84,7 @@ def get_narx_terms(u, y):
     xy_hstack = np.c_[u, y]
     time_shift_vars = make_time_shift_features(xy_hstack, narx.time_shift_ids_)
     poly_terms = make_poly_features(time_shift_vars, narx.poly_ids_)
-    return poly_terms, narx
+    return *_mask_missing_value(poly_terms, y), narx
 
 
 def fastcan_pruned_narx(terms, y, n_samples_to_select: int, random_state: int):
