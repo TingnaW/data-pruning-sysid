@@ -11,14 +11,14 @@ from fastcan import minibatch
 from utils import get_dual_stable_equilibria_data, get_narx_terms
 
 
-def _plot_pca(u, y, n_sample, figure_name):
+def _plot_pca(u, y, n_sample, figure_name, random_state):
     poly_terms, y, _ = get_narx_terms(u, y)
     pca = PCA(2).fit(poly_terms)
     pcs_all = pca.transform(poly_terms)
 
     kmeans = MiniBatchKMeans(
         n_clusters=30,
-        random_state=0,
+        random_state=random_state,
         batch_size=6,
         n_init="auto",
     ).fit(poly_terms)
@@ -28,7 +28,7 @@ def _plot_pca(u, y, n_sample, figure_name):
     ids_fastcan = minibatch(poly_terms.T, atoms.T, n_sample, batch_size=5)
     pcs_fastcan = pca.transform(poly_terms[ids_fastcan])
 
-    rng = np.random.default_rng(123)
+    rng = np.random.default_rng(random_state)
     ids_random = rng.choice(y.size, n_sample, replace=False)
     pcs_random = pca.transform(poly_terms[ids_random])
 
@@ -46,19 +46,20 @@ def _plot_pca(u, y, n_sample, figure_name):
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-def main(dataset) -> None:
+@click.option("--random", default=0, help="Random state (int)")
+def main(dataset, random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_pca(train_val_u, train_val_y, 100, "pca_dsed.png")
+            _plot_pca(train_val_u, train_val_y, 100, "pca_dsed.png", random)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png")
+            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png", random)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png")
+            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png", random)
         case _:
             raise NameError(
                 "The dataset is not supported. Please choose from: dsed, emps, whbm"

@@ -35,6 +35,14 @@ Generate box plot results.
 ```shell
 uv run plot_box.py
 ```
+To set the dataset, run
+```shell
+uv run plot_box.py --dataset emps
+```
+To see help, run
+```shell
+uv run plot_box.py --help
+```
 
 Generate errorbar plot results.
 
@@ -46,4 +54,8 @@ Generate PCA plot results.
 
 ```shell
 uv run plot_pca.py
+```
+To set random state, run
+```shell
+uv run plot_pca.py --random 123
 ```

@@ -6,20 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
-    "fastcan",
+    "fastcan>=0.3.0",
     "matplotlib>=3.10.0",
     "nonlinear-benchmarks>=1.0.0",
 ]
 
-[tool.uv.sources]
-fastcan = { git = "https://github.com/scikit-learn-contrib/fastcan" }
-
 [dependency-groups]
-dev = [
-    "black>=24.10.0",
-    "mypy>=1.13.0",
-    "ruff>=0.7.2",
-]
+dev = ["black>=24.10.0", "mypy>=1.13.0", "ruff>=0.7.2"]
 
 
 [tool.black]
