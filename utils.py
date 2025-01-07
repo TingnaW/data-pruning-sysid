@@ -13,8 +13,17 @@ from sklearn.cluster import MiniBatchKMeans
 from sklearn.linear_model import LinearRegression
 
 
-def get_dual_stable_equilibria_data(auto=False):
-    """Get dual stable equilibria data."""
+def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
+    """Get dual stable equilibria data.
+    auto : bool
+        Whether the system is autonomous or not.
+    y0 : 2d array-like
+        Initial condition.
+    dur : float
+        Duration of the simulation.
+    n_samples : int
+        Number of samples to generate for each initial condition.
+    """
 
     def _nonautonomous_dual_stable_equilibria(y, t):
         y1, y2 = y
@@ -31,13 +40,18 @@ def get_dual_stable_equilibria_data(auto=False):
         func = _autonomous_dual_stable_equilibria
     else:
         func = _nonautonomous_dual_stable_equilibria
-    n_samples = 100
-    x0 = np.linspace(0, 2, 10)
-    n_init = len(x0)
-    y0_y = np.cos(np.pi * x0)
-    y0_x = np.sin(np.pi * x0)
-    y0 = np.c_[y0_x, y0_y]
-    t = np.linspace(0, 10, n_samples)
+
+    if y0 is None:
+        n_init = 10
+        x0 = np.linspace(0, 2, n_init)
+        y0_y = np.cos(np.pi * x0)
+        y0_x = np.sin(np.pi * x0)
+        y0 = np.c_[y0_x, y0_y]
+    else:
+        n_init = len(y0)
+
+    n_samples = n_samples
+    t = np.linspace(0, dur, n_samples)
     sol = np.zeros((n_init, n_samples, 2))
     u = np.zeros(0)
     y = np.zeros(0)
@@ -45,7 +59,7 @@ def get_dual_stable_equilibria_data(auto=False):
         sol[i] = odeint(func, y0[i], t)
         u = np.r_[u, 0.1 * np.cos(0.2 * np.pi * t), np.nan]
         y = np.r_[y, sol[i, :, 0], np.nan]
-    return u, y, sol
+    return u[:-1], y[:-1], sol
 
 
 def get_narx_terms(u, y):
