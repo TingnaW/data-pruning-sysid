@@ -1,11 +1,9 @@
 """Visualize the redundancy of the dataset."""
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from fastcan.narx import make_time_shift_features, make_time_shift_ids
 from sklearn.decomposition import PCA
-
-from fastcan.narx import make_time_shift_ids, make_time_shift_features
-
 
 if __name__ == "__main__":
     # Plot raw time-sereis data
@@ -26,7 +24,7 @@ if __name__ == "__main__":
 
     plt.imshow(Y_corr)
     cb = plt.colorbar()
-    cb.ax.set_title('$r$')
+    cb.ax.set_title("$r$")
     ticks = np.arange(len(time_ids), step=5)
     plt.xticks(ticks)
     plt.yticks(ticks)
@@ -42,7 +40,7 @@ if __name__ == "__main__":
 
     plt.scatter(pcs[:, 0], pcs[:, 1], c=u)
     cb = plt.colorbar()
-    cb.ax.set_title('Time (s)')
+    cb.ax.set_title("Time (s)")
     plt.xlabel("The First Principle Component")
     plt.ylabel("The Second Principle Component")
     plt.savefig("redundancy_sample.png", bbox_inches="tight")

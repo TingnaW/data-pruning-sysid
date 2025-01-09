@@ -4,9 +4,9 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
+from fastcan import minibatch
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.decomposition import PCA
-from fastcan import minibatch
 
 from utils import get_dual_stable_equilibria_data, get_narx_terms
 
