@@ -16,9 +16,10 @@ def _plot_prediction(
         narx = make_narx(
             u.reshape(-1, 1),
             y,
-            n_features_to_select=n_terms,
+            n_terms_to_select=n_terms,
             max_delay=max_delay,
             poly_degree=poly_degree,
+            fit_intercept=False,
             verbose=0,
         ).fit(
             u.reshape(-1, 1),

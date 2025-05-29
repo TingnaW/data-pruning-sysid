@@ -17,7 +17,7 @@ def _plot_atom(u, y, n_atoms_list, n_samples, figure_name):
     for i in range(n_random):
         print(figure_name, "   ", f"Random test: {i+1}/{n_random}")
         for j, n_atoms in enumerate(n_atoms_list):
-            coef, intercept = fastcan_pruned_narx(
+            coef = fastcan_pruned_narx(
                 poly_terms,
                 y,
                 n_samples,
@@ -25,7 +25,7 @@ def _plot_atom(u, y, n_atoms_list, n_samples, figure_name):
                 n_atoms=n_atoms,
             )
             r2_fastcan[i, j] = r2_score(
-                np.r_[coef, intercept], np.r_[narx.coef_, narx.intercept_]
+                coef, narx.coef_
             )
 
     plt.boxplot(r2_fastcan, tick_labels=n_atoms_list)
@@ -66,7 +66,6 @@ def main(dataset) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                # [10, 100, 1000],
                 [10, 40, 70, 100, 400, 700, 1000],
                 10000,
                 "atom_whbm.png",
