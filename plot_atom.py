@@ -4,13 +4,12 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
-from sklearn.metrics import r2_score
 
-from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms
+from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms, get_r2
 
 
-def _plot_atom(u, y, n_atoms_list, n_samples, figure_name):
-    poly_terms, y, narx = get_narx_terms(u, y)
+def _plot_atom(u, y, n_atoms_list, n_samples, figure_name, intercept=True):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
     n_random = 10
     r2_fastcan = np.zeros((n_random, len(n_atoms_list)))
@@ -23,10 +22,9 @@ def _plot_atom(u, y, n_atoms_list, n_samples, figure_name):
                 n_samples,
                 i,
                 n_atoms=n_atoms,
+                intercept=intercept,
             )
-            r2_fastcan[i, j] = r2_score(
-                coef, narx.coef_
-            )
+            r2_fastcan[i, j] = get_r2(coef, narx)
 
     plt.boxplot(r2_fastcan, tick_labels=n_atoms_list)
     plt.ylabel("R2")
@@ -59,6 +57,7 @@ def main(dataset) -> None:
                 [10, 40, 70, 100, 400, 700, 1000, 2000],
                 10000,
                 "atom_emps.png",
+                False,  # No intercept for EMPS dataset
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

@@ -4,32 +4,32 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
-from sklearn.metrics import r2_score
 
 from utils import (
     fastcan_pruned_narx,
     get_dual_stable_equilibria_data,
     get_narx_terms,
     random_pruned_narx,
+    get_r2,
 )
 
 
-def _plot_box(u, y, n_samples_to_select, twinx, figure_name):
-    poly_terms, y, narx = get_narx_terms(u, y)
+def _plot_box(u, y, n_samples_to_select, twinx, figure_name, intercept=True):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
     n_random = 10
     r2_fastcan = np.zeros(n_random)
     r2_random = np.zeros(n_random)
     for i in range(n_random):
         print(figure_name, "   ", f"Random test: {i+1}/{n_random}")
-        coef, intercept = fastcan_pruned_narx(poly_terms, y, n_samples_to_select, i)
-        r2_fastcan[i] = r2_score(
-            np.r_[coef, intercept], np.r_[narx.coef_, narx.intercept_]
+        coef = fastcan_pruned_narx(poly_terms, y, n_samples_to_select, i, intercept=intercept)
+        r2_fastcan[i] = get_r2(
+            coef, narx
         )
 
-        coef, intercept = random_pruned_narx(poly_terms, y, n_samples_to_select, i)
-        r2_random[i] = r2_score(
-            np.r_[coef, intercept], np.r_[narx.coef_, narx.intercept_]
+        coef = random_pruned_narx(poly_terms, y, n_samples_to_select, i, intercept=intercept)
+        r2_random[i] = get_r2(
+            coef, narx
         )
     fig, ax1 = plt.subplots()
     ax1.boxplot(r2_fastcan.reshape(-1, 1), positions=[1])
@@ -57,7 +57,8 @@ def main(dataset) -> None:
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
-            _plot_box(train_val_u, train_val_y, 10000, False, "box_emps.png")
+            # No intercept for EMPS dataset
+            _plot_box(train_val_u, train_val_y, 10000, False, "box_emps.png", False)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val

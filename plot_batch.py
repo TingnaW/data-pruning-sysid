@@ -4,13 +4,12 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
-from sklearn.metrics import r2_score
 
-from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms
+from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms, get_r2
 
 
-def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name):
-    poly_terms, y, narx = get_narx_terms(u, y)
+def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercept=True):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
     n_random = 10
     n_batches = len(batch_size_list)
@@ -18,11 +17,11 @@ def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name):
     for i in range(n_random):
         print(figure_name, "   ", f"Random test: {i+1}/{n_random}")
         for j, batch_size in enumerate(batch_size_list):
-            coef, intercept = fastcan_pruned_narx(
-                poly_terms, y, n_samples, i, batch_size, n_atoms
+            coef = fastcan_pruned_narx(
+                poly_terms, y, n_samples, i, batch_size, n_atoms, intercept
             )
-            r2_fastcan[i, j] = r2_score(
-                np.r_[coef, intercept], np.r_[narx.coef_, narx.intercept_]
+            r2_fastcan[i, j] = get_r2(
+                coef, narx
             )
 
     plt.boxplot(r2_fastcan, tick_labels=batch_size_list)
@@ -60,6 +59,7 @@ def main(dataset) -> None:
                 10000,
                 700,
                 "batch_emps.png",
+                False,  # No intercept for EMPS dataset
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

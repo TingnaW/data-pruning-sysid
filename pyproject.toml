@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
     "fastcan",
+    "ipykernel>=6.29.5",
     "matplotlib>=3.10.0",
     "nonlinear-benchmarks>=1.0.0",
 ]
