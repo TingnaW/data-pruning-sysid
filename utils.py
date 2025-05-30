@@ -3,14 +3,25 @@
 import numpy as np
 from fastcan import minibatch
 from fastcan.narx import (
-    _mask_missing_value,
+    fd2tp,
     make_narx,
     make_poly_features,
     make_time_shift_features,
 )
+from fastcan.utils import mask_missing_values
 from scipy.integrate import odeint
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+
+def get_r2(coef, bench_narx):
+    if bench_narx.fit_intercept:
+        return r2_score(
+            coef,
+            np.r_[bench_narx.coef_, bench_narx.intercept_],
+        )
+    return r2_score(coef, bench_narx.coef_)
 
 
 def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
@@ -61,7 +72,7 @@ def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
     return u[:-1], y[:-1], sol
 
 
-def get_narx_terms(u, y):
+def get_narx_terms(u, y, intercept=True):
     """
     Generate NARX terms from input and output data.
 
@@ -72,6 +83,9 @@ def get_narx_terms(u, y):
 
     y : array-like
         Output data.
+
+    intercept : bool, optional, default=True
+        Whether to include an intercept term in the model.
 
     Returns
     -------
@@ -85,9 +99,10 @@ def get_narx_terms(u, y):
     narx = make_narx(
         u.reshape(-1, 1),
         y,
-        n_features_to_select=10,
+        n_terms_to_select=10,
         max_delay=10,
         poly_degree=3,
+        fit_intercept=intercept,
         verbose=0,
     ).fit(
         u.reshape(-1, 1),
@@ -95,9 +110,10 @@ def get_narx_terms(u, y):
     )
 
     xy_hstack = np.c_[u, y]
-    time_shift_vars = make_time_shift_features(xy_hstack, narx.time_shift_ids_)
-    poly_terms = make_poly_features(time_shift_vars, narx.poly_ids_)
-    return *_mask_missing_value(poly_terms, y), narx
+    time_shift_ids, poly_ids = fd2tp(narx.feat_ids_, narx.delay_ids_)
+    time_shift_vars = make_time_shift_features(xy_hstack, time_shift_ids)
+    poly_terms = make_poly_features(time_shift_vars, poly_ids)
+    return *mask_missing_values(poly_terms, y), narx
 
 
 def fastcan_pruned_narx(
@@ -105,8 +121,9 @@ def fastcan_pruned_narx(
     y,
     n_samples_to_select: int,
     random_state: int,
-    batch_size=1000,
+    batch_size=10000000,
     n_atoms=100,
+    intercept=True,
 ):
     """
     Fit a NARX model with data pruned by FastCan.
@@ -125,13 +142,13 @@ def fastcan_pruned_narx(
     random_state : int
         Random state.
 
+    intercept : bool, optional, default=True
+        Whether to include an intercept term in the model.
+
     Returns
     -------
     coef : array-like
         Coefficients of the linear regression.
-
-    intercept : float
-        Intercept of the linear regression.
     """
     kmeans = MiniBatchKMeans(
         n_clusters=n_atoms,
@@ -141,13 +158,19 @@ def fastcan_pruned_narx(
     ).fit(terms)
     atoms = kmeans.cluster_centers_
     ids_fastcan = minibatch(
-        terms.T, atoms.T, n_samples_to_select, batch_size=batch_size
+        terms.T, atoms.T, n_samples_to_select, batch_size=batch_size, verbose=0
     )
-    pruned_narx = LinearRegression().fit(terms[ids_fastcan], y[ids_fastcan])
-    return pruned_narx.coef_, pruned_narx.intercept_
+    pruned_narx = LinearRegression(fit_intercept=intercept).fit(
+        terms[ids_fastcan], y[ids_fastcan]
+    )
+    if intercept:
+        return np.r_[pruned_narx.coef_, pruned_narx.intercept_]
+    return pruned_narx.coef_
 
 
-def random_pruned_narx(terms, y, n_samples_to_select: int, random_state: int):
+def random_pruned_narx(
+    terms, y, n_samples_to_select: int, random_state: int, intercept=True
+):
     """
     Fit a NARX model with data pruned by random selection.
 
@@ -165,15 +188,19 @@ def random_pruned_narx(terms, y, n_samples_to_select: int, random_state: int):
     random_state : int
         Random state.
 
+    intercept : bool, optional, default=True
+        Whether to include an intercept term in the model.
+
     Returns
     -------
     coef : array-like
         Coefficients of the linear regression.
-
-    intercept : float
-        Intercept of the linear regression.
     """
     rng = np.random.default_rng(random_state)
     ids_random = rng.choice(y.size, n_samples_to_select, replace=False)
-    pruned_narx = LinearRegression().fit(terms[ids_random], y[ids_random])
-    return pruned_narx.coef_, pruned_narx.intercept_
+    pruned_narx = LinearRegression(fit_intercept=intercept).fit(
+        terms[ids_random], y[ids_random]
+    )
+    if intercept:
+        return np.r_[pruned_narx.coef_, pruned_narx.intercept_]
+    return pruned_narx.coef_

@@ -10,15 +10,24 @@ from utils import get_dual_stable_equilibria_data
 
 
 def _plot_prediction(
-    u, y, n_terms, max_delay, poly_degree, plot_n_samples, figure_name, narx=None
+    u,
+    y,
+    n_terms,
+    max_delay,
+    poly_degree,
+    plot_n_samples,
+    figure_name,
+    narx=None,
+    intercept=True,
 ):
     if narx is None:
         narx = make_narx(
             u.reshape(-1, 1),
             y,
-            n_features_to_select=n_terms,
+            n_terms_to_select=n_terms,
             max_delay=max_delay,
             poly_degree=poly_degree,
+            fit_intercept=intercept,
             verbose=0,
         ).fit(
             u.reshape(-1, 1),
@@ -95,6 +104,7 @@ def main(dataset, nterms, delay, poly) -> None:
                 poly,
                 25000,
                 "pred_train_emps.png",
+                intercept=False,  # No intercept for EMPS dataset
             )
             _plot_prediction(
                 test_val_u,

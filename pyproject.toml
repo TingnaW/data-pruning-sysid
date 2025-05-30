@@ -6,18 +6,27 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
-    "fastcan>=0.3.2",
+    "fastcan",
     "matplotlib>=3.10.0",
     "nonlinear-benchmarks>=1.0.0",
+    "rich>=14.0.0",
 ]
 
 [dependency-groups]
-dev = ["black>=24.10.0", "mypy>=1.13.0", "ruff>=0.7.2"]
+dev = [
+    "black>=24.10.0",
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.7",
+    "mypy>=1.13.0",
+    "ruff>=0.7.2",
+]
 
+[tool.uv.sources]
+fastcan = { git = "https://github.com/scikit-learn-contrib/fastcan" }
 
 [tool.black]
 line-length = 88
-target-version = ['py310', 'py311', 'py312']
+target-version = ['py312', 'py313']
 preview = true
 exclude = '''
 /(
