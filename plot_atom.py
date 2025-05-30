@@ -57,7 +57,7 @@ def main(dataset) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                [5, 10, 30, 60, 100, 200],
+                [5, 10, 30, 60, 100, 150, 200],
                 600,
                 "atom_dsed.png",
             )
@@ -78,7 +78,7 @@ def main(dataset) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                [10, 40, 70, 100, 400, 700, 1000],
+                [10, 40, 70, 100, 400, 700, 1000, 2000],
                 10000,
                 "atom_whbm.png",
             )
