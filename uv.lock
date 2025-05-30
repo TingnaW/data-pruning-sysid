@@ -281,7 +281,7 @@ wheels = [
 [[package]]
 name = "fastcan"
 version = "0.4.0"
-source = { git = "https://github.com/scikit-learn-contrib/fastcan#5584e0c23f266063945aa08a16c68df19f650208" }
+source = { git = "https://github.com/scikit-learn-contrib/fastcan#4a7c4bbf374c957e8d2514cb63910d2e6d9151b2" }
 dependencies = [
     { name = "scikit-learn" },
 ]
