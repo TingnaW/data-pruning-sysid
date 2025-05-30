@@ -10,7 +10,15 @@ from utils import get_dual_stable_equilibria_data
 
 
 def _plot_prediction(
-    u, y, n_terms, max_delay, poly_degree, plot_n_samples, figure_name, narx=None, intercept=True
+    u,
+    y,
+    n_terms,
+    max_delay,
+    poly_degree,
+    plot_n_samples,
+    figure_name,
+    narx=None,
+    intercept=True,
 ):
     if narx is None:
         narx = make_narx(

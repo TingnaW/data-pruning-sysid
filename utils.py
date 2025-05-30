@@ -14,6 +14,7 @@ from sklearn.cluster import MiniBatchKMeans
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
+
 def get_r2(coef, bench_narx):
     if bench_narx.fit_intercept:
         return r2_score(
@@ -157,7 +158,7 @@ def fastcan_pruned_narx(
     ).fit(terms)
     atoms = kmeans.cluster_centers_
     ids_fastcan = minibatch(
-        terms.T, atoms.T, n_samples_to_select, batch_size=batch_size
+        terms.T, atoms.T, n_samples_to_select, batch_size=batch_size, verbose=0
     )
     pruned_narx = LinearRegression(fit_intercept=intercept).fit(
         terms[ids_fastcan], y[ids_fastcan]
@@ -167,7 +168,9 @@ def fastcan_pruned_narx(
     return pruned_narx.coef_
 
 
-def random_pruned_narx(terms, y, n_samples_to_select: int, random_state: int, intercept=True):
+def random_pruned_narx(
+    terms, y, n_samples_to_select: int, random_state: int, intercept=True
+):
     """
     Fit a NARX model with data pruned by random selection.
 

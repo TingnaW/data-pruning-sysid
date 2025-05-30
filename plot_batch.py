@@ -4,8 +4,14 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
+from rich.progress import Progress, TimeRemainingColumn
 
-from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms, get_r2
+from utils import (
+    fastcan_pruned_narx,
+    get_dual_stable_equilibria_data,
+    get_narx_terms,
+    get_r2,
+)
 
 
 def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercept=True):
@@ -14,15 +20,19 @@ def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercep
     n_random = 10
     n_batches = len(batch_size_list)
     r2_fastcan = np.zeros((n_random, n_batches))
-    for i in range(n_random):
-        print(figure_name, "   ", f"Random test: {i+1}/{n_random}")
-        for j, batch_size in enumerate(batch_size_list):
-            coef = fastcan_pruned_narx(
-                poly_terms, y, n_samples, i, batch_size, n_atoms, intercept
-            )
-            r2_fastcan[i, j] = get_r2(
-                coef, narx
-            )
+    columns = [*Progress.get_default_columns()]
+    columns[-1] = TimeRemainingColumn(elapsed_when_finished=True)
+    with Progress(*columns, auto_refresh=True) as pb:
+        t1 = pb.add_task("[red]Pruning data...", total=n_batches)
+        t2 = pb.add_task("[green]Random test...", total=n_random)
+        for i in range(n_random):
+            for j, batch_size in enumerate(batch_size_list):
+                coef = fastcan_pruned_narx(
+                    poly_terms, y, n_samples, i, batch_size, n_atoms, intercept
+                )
+                r2_fastcan[i, j] = get_r2(coef, narx)
+                pb.update(task_id=t1, completed=j + 1)
+            pb.update(task_id=t2, completed=i + 1)
 
     plt.boxplot(r2_fastcan, tick_labels=batch_size_list)
     plt.ylabel("R2")
