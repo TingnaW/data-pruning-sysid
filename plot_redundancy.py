@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from fastcan.narx import make_time_shift_features, make_time_shift_ids
+from fastcan.utils import mask_missing_values
 from sklearn.decomposition import PCA
 
 if __name__ == "__main__":
@@ -20,6 +21,7 @@ if __name__ == "__main__":
     # Plot the redundancy in column-wise (feature-wise)
     time_ids = make_time_shift_ids(1, 20, True)
     Y = make_time_shift_features(y.reshape(-1, 1), time_ids)
+    Y, u = mask_missing_values(Y, u)  # Mask missing values caused by time shifts
     Y_corr = np.corrcoef(Y, rowvar=False)
 
     plt.imshow(Y_corr)

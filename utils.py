@@ -24,7 +24,9 @@ def get_r2(coef, bench_narx):
     return r2_score(coef, bench_narx.coef_)
 
 
-def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
+def get_dual_stable_equilibria_data(
+    auto=False, y0=None, dur=10, n_samples=100, max_delay=10
+):
     """Get dual stable equilibria data.
     auto : bool
         Whether the system is autonomous or not.
@@ -67,8 +69,8 @@ def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
     y = np.zeros(0)
     for i in range(n_init):
         sol[i] = odeint(func, y0[i], t)
-        u = np.r_[u, 0.1 * np.cos(0.2 * np.pi * t), np.nan]
-        y = np.r_[y, sol[i, :, 0], np.nan]
+        u = np.r_[u, 0.1 * np.cos(0.2 * np.pi * t), [np.nan] * max_delay]
+        y = np.r_[y, sol[i, :, 0], [np.nan] * max_delay]
     return u[:-1], y[:-1], sol
 
 

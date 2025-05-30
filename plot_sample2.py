@@ -57,6 +57,8 @@ def _plot_sample(
                 pb.update(task_id=t2, completed=j + 1)
             pb.update(task_id=t3, completed=i + 1)
 
+    np.save(figure_name[:-4], r2_fastcan)
+    print("Results have been saved to " + figure_name[:-4] + ".npy")
     # Generate plot
     r2_mean = 1 - r2_fastcan.mean(axis=0)
     fig, ax = plt.subplots(figsize=(10, 8))
