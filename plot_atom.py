@@ -17,7 +17,8 @@ from utils import (
 def _plot_atom(u, y, n_atoms_list, n_samples, figure_name, intercept=True):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
-    n_random = 10
+    # n_random = 10
+    n_random = 20
     n_tests = len(n_atoms_list)
     r2_fastcan = np.zeros((n_random, n_tests))
     columns = [*Progress.get_default_columns()]

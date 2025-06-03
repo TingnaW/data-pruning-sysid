@@ -17,7 +17,7 @@ from utils import (
 def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercept=True):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
-    n_random = 10
+    n_random = 20
     n_batches = len(batch_size_list)
     r2_fastcan = np.zeros((n_random, n_batches))
     columns = [*Progress.get_default_columns()]
