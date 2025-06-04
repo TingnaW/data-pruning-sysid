@@ -14,8 +14,8 @@ from utils import (
 )
 
 
-def _plot_atom(u, y, n_atoms_list, n_samples, n_random, figure_name, intercept=True):
-    poly_terms, y, narx = get_narx_terms(u, y, intercept)
+def _plot_atom(u, y, n_atoms_list, n_samples, n_random, figure_name, intercept=True, max_delay=10):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
     """Plot the R2 for different number of atoms."""
     n_tests = len(n_atoms_list)
@@ -62,6 +62,7 @@ def main(dataset, n_random) -> None:
                 600,
                 n_random=n_random,
                 figure_name="atom_dsed.png",
+                max_delay=3,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -73,7 +74,8 @@ def main(dataset, n_random) -> None:
                 10000,
                 n_random=n_random,
                 figure_name="atom_emps.png",
-                intercept=False,  # No intercept for EMPS dataset
+                # intercept=False,  # No intercept for EMPS dataset
+                max_delay=3,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

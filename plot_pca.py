@@ -27,7 +27,7 @@ def _plot_pca(u, y, n_clusters, batch_size, n_sample, figure_name, random_state,
     atoms = kmeans.cluster_centers_
     pcs_atoms = pca.transform(atoms)
 
-    ids_fastcan = minibatch(poly_terms.T, atoms.T, n_sample, batch_size=5)
+    ids_fastcan = minibatch(poly_terms.T, atoms.T, n_sample, batch_size=batch_size)
     pcs_fastcan = pca.transform(poly_terms[ids_fastcan])
 
     rng = np.random.default_rng(random_state)
@@ -53,11 +53,11 @@ def main(dataset, random_state) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_pca(train_val_u, train_val_y, 60, 10, 100, "pca_dsed.png", random_state, max_delay=3)
+            _plot_pca(train_val_u, train_val_y, 60, 1000000, 100, "pca_dsed.png", random_state, max_delay=3)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png", random_state, max_delay=3)
+            _plot_pca(train_val_u, train_val_y, 60, 1000000, 100, "pca_emps.png", random_state, max_delay=3)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val

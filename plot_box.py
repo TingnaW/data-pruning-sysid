@@ -15,8 +15,8 @@ from utils import (
 )
 
 
-def _plot_box(u, y, n_samples_to_select, n_atoms, twinx, figure_name, n_random, intercept=True):
-    poly_terms, y, narx = get_narx_terms(u, y, intercept)
+def _plot_box(u, y, n_samples_to_select, n_atoms, twinx, figure_name, n_random, intercept=True, max_delay=10):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
     r2_fastcan = np.zeros(n_random)
     r2_random = np.zeros(n_random)
@@ -53,12 +53,12 @@ def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_box(train_val_u, train_val_y, 100, 60, False, "box_dsed.png", n_random=n_random)
+            _plot_box(train_val_u, train_val_y, 100, 60, False, "box_dsed.png", n_random=n_random, max_delay=3)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
-            _plot_box(train_val_u, train_val_y, 6000, 40, False, "box_emps.png",n_random=n_random)
+            _plot_box(train_val_u, train_val_y, 6000, 40, False, "box_emps.png",n_random=n_random, max_delay=3)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
