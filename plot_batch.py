@@ -14,8 +14,8 @@ from utils import (
 )
 
 
-def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, n_random, figure_name, intercept=True):
-    poly_terms, y, narx = get_narx_terms(u, y, intercept)
+def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, n_random, figure_name, intercept=True, max_delay=10):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
     """Plot the R2 for different batch sizes."""
     n_batches = len(batch_size_list)
@@ -59,6 +59,7 @@ def main(dataset, n_random) -> None:
                 60,
                 n_random=n_random,
                 figure_name="batch_dsed.png",
+                max_delay=3,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -72,7 +73,8 @@ def main(dataset, n_random) -> None:
                 40,
                 n_random=n_random,
                 figure_name="batch_emps.png",
-                intercept=False,  # No intercept for EMPS dataset
+                # intercept=False,  # No intercept for EMPS dataset
+                max_delay=3,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

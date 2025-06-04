@@ -109,7 +109,7 @@ def main(dataset, n_random) -> None:
                 40,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",
-                intercept=True,
+                # intercept=True,
                 n_random=n_random,
                 max_delay=3,
             )
