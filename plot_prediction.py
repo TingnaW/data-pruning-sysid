@@ -82,6 +82,7 @@ def main(dataset, nterms, delay, poly) -> None:
                 poly,
                 100,
                 "pred_test_dsed_1.png",
+                narx,
             )
             _plot_prediction(
                 test_val_u2,
@@ -91,6 +92,7 @@ def main(dataset, nterms, delay, poly) -> None:
                 poly,
                 100,
                 "pred_test_dsed_2.png",
+                narx
             )
         case "emps":
             train_val, test_val = nonlinear_benchmarks.EMPS()
@@ -104,7 +106,7 @@ def main(dataset, nterms, delay, poly) -> None:
                 poly,
                 25000,
                 "pred_train_emps.png",
-                intercept=False,  # No intercept for EMPS dataset
+                # intercept=False,  # No intercept for EMPS dataset
             )
             _plot_prediction(
                 test_val_u,
