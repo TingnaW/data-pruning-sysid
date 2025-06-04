@@ -14,11 +14,10 @@ from utils import (
 )
 
 
-def _plot_atom(u, y, n_atoms_list, n_samples, figure_name, intercept=True):
+def _plot_atom(u, y, n_atoms_list, n_samples, n_random, figure_name, intercept=True):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
-    # n_random = 10
-    n_random = 20
+    """Plot the R2 for different number of atoms."""
     n_tests = len(n_atoms_list)
     r2_fastcan = np.zeros((n_random, n_tests))
     columns = [*Progress.get_default_columns()]
@@ -51,7 +50,8 @@ def _plot_atom(u, y, n_atoms_list, n_samples, figure_name, intercept=True):
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-def main(dataset) -> None:
+@click.option("--n_random", default=10, help="Set the number of random tests")
+def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
@@ -60,7 +60,8 @@ def main(dataset) -> None:
                 train_val_y,
                 [5, 10, 30, 60, 100, 150, 200],
                 600,
-                "atom_dsed.png",
+                n_random=n_random,
+                figure_name="atom_dsed.png",
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -70,8 +71,9 @@ def main(dataset) -> None:
                 train_val_y,
                 [10, 40, 70, 100, 400, 700, 1000, 2000],
                 10000,
-                "atom_emps.png",
-                False,  # No intercept for EMPS dataset
+                n_random=n_random,
+                figure_name="atom_emps.png",
+                intercept=False,  # No intercept for EMPS dataset
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -81,7 +83,8 @@ def main(dataset) -> None:
                 train_val_y,
                 [10, 40, 70, 100, 400, 700, 1000, 2000],
                 10000,
-                "atom_whbm.png",
+                n_random=n_random,
+                figure_name="atom_whbm.png",
             )
         case _:
             raise NameError(

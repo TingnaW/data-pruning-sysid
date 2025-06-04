@@ -15,15 +15,14 @@ from utils import (
 )
 
 
-def _plot_box(u, y, n_samples_to_select, twinx, figure_name, intercept=True):
+def _plot_box(u, y, n_samples_to_select, n_atoms, twinx, figure_name, n_random, intercept=True):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
-    n_random = 10
     r2_fastcan = np.zeros(n_random)
     r2_random = np.zeros(n_random)
     for i in track(range(n_random), description="[green]Random test..."):
         coef = fastcan_pruned_narx(
-            poly_terms, y, n_samples_to_select, i, intercept=intercept
+            poly_terms, y, n_samples_to_select, i, n_atoms=n_atoms, intercept=intercept
         )
         r2_fastcan[i] = get_r2(coef, narx)
 
@@ -49,20 +48,21 @@ def _plot_box(u, y, n_samples_to_select, twinx, figure_name, intercept=True):
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-def main(dataset) -> None:
+@click.option("--n_random", default=10, help="Set the number of random tests")
+def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_box(train_val_u, train_val_y, 600, True, "box_dsed.png")
+            _plot_box(train_val_u, train_val_y, 100, 60, False, "box_dsed.png", n_random=n_random)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
-            _plot_box(train_val_u, train_val_y, 10000, False, "box_emps.png", False)
+            _plot_box(train_val_u, train_val_y, 6000, 40, False, "box_emps.png",n_random=n_random)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
-            _plot_box(train_val_u, train_val_y, 10000, False, "box_whbm.png")
+            _plot_box(train_val_u, train_val_y, 10000, False, "box_whbm.png",n_random=n_random)
         case _:
             raise NameError(
                 "The dataset is not supported. Please choose from: dsed, emps, whbm"

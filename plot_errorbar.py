@@ -16,11 +16,9 @@ from utils import (
 
 
 def _plot_errorbar(
-    u, y, n_sample_lower, n_sample_upper, n_steps, twinx, figure_name, intercept=True
-):
-    poly_terms, y, narx = get_narx_terms(u, y, intercept)
+    u, y, n_sample_lower, n_sample_upper, n_steps, n_atoms, twinx, figure_name, intercept=True, n_random=10, max_delay=10):
+    poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
-    n_random = 10
     sample_step = int((n_sample_upper - n_sample_lower) / (n_steps - 1))
     r2_fastcan = np.zeros((n_random, n_steps))
     r2_random = np.zeros((n_random, n_steps))
@@ -36,6 +34,7 @@ def _plot_errorbar(
                     y,
                     j * sample_step + n_sample_lower,
                     i,
+                    n_atoms=n_atoms,
                     intercept=intercept,
                 )
                 r2_fastcan[i, j] = get_r2(coef, narx)
@@ -89,26 +88,30 @@ def _plot_errorbar(
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-def main(dataset) -> None:
+@click.option("--n_random", default=10, help="Set the number of random tests")
+def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_errorbar(
-                train_val_u, train_val_y, 300, 600, 11, True, "errorbar_dsed.png"
+                train_val_u, train_val_y, 300, 600, 11, 60, False, "errorbar_dsed.png", n_random=n_random, max_delay=3
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
             _plot_errorbar(
-                train_val_u,
-                train_val_y,
-                2000,
-                20000,
-                10,
+                train_val_u, 
+                train_val_y, 
+                4000, 
+                20000, 
+                9, 
+                40,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",
-                intercept=False,
+                intercept=True,
+                n_random=n_random,
+                max_delay=3,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

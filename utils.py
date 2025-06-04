@@ -71,10 +71,13 @@ def get_dual_stable_equilibria_data(
         sol[i] = odeint(func, y0[i], t)
         u = np.r_[u, 0.1 * np.cos(0.2 * np.pi * t), [np.nan] * max_delay]
         y = np.r_[y, sol[i, :, 0], [np.nan] * max_delay]
-    return u[:-1], y[:-1], sol
+    rng = np.random.default_rng(12345)
+    e = rng.normal(0, 0.002, y.shape[0])
+    y += e
+    return u[:-max_delay], y[:-max_delay], sol
 
 
-def get_narx_terms(u, y, intercept=True):
+def get_narx_terms(u, y, intercept=True, max_delay=10):
     """
     Generate NARX terms from input and output data.
 
@@ -88,6 +91,9 @@ def get_narx_terms(u, y, intercept=True):
 
     intercept : bool, optional, default=True
         Whether to include an intercept term in the model.
+    
+    max_delay : int, optional, default=10
+        Maximum delay for the NARX model.
 
     Returns
     -------
@@ -102,7 +108,7 @@ def get_narx_terms(u, y, intercept=True):
         u.reshape(-1, 1),
         y,
         n_terms_to_select=10,
-        max_delay=10,
+        max_delay=max_delay,
         poly_degree=3,
         fit_intercept=intercept,
         verbose=0,

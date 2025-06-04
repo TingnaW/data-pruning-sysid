@@ -26,8 +26,8 @@ def _plot_sample(
     # n_atom_steps,
     atom_step,
     figure_name,
+    n_random,
     intercept=True,
-    n_random=5,
 ):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
     sample_step = int((n_sample_upper - n_sample_lower) / (n_sample_steps - 1))
@@ -92,7 +92,7 @@ def _plot_sample(
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-@click.option("--n_random", default=1, help="Set the number of random tests")
+@click.option("--n_random", default=5, help="Set the number of random tests")
 def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
@@ -108,8 +108,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_steps=40,
                 atom_step = [5, 10, 30, 60, 100, 150, 200],
                 figure_name="sample_dsed.png",
-                intercept=True,
                 n_random=n_random,
+                intercept=True,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -126,8 +126,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_steps=6,
                 atom_step=[10, 40, 70, 100, 400, 700, 1000, 2000],
                 figure_name="sample_emps.png",
-                intercept=False,
                 n_random=n_random,
+                intercept=False,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -143,8 +143,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_steps=6,
                 atom_step=[10, 40, 70, 100, 400, 700, 1000, 2000],
                 figure_name="sample_whbm.png",
-                intercept=True,
                 n_random=n_random,
+                intercept=True,
             )
         case _:
             raise NameError(

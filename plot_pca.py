@@ -11,15 +11,17 @@ from sklearn.decomposition import PCA
 from utils import get_dual_stable_equilibria_data, get_narx_terms
 
 
-def _plot_pca(u, y, n_sample, figure_name, random_state):
-    poly_terms, y, _ = get_narx_terms(u, y)
+def _plot_pca(u, y, n_clusters, batch_size, n_sample, figure_name, random_state, intercept=True, max_delay=10):
+    poly_terms, y, _ = get_narx_terms(u, y, intercept, max_delay)
     pca = PCA(2).fit(poly_terms)
     pcs_all = pca.transform(poly_terms)
 
     kmeans = MiniBatchKMeans(
-        n_clusters=30,
+        # n_clusters=30,
+        n_clusters=n_clusters,
         random_state=random_state,
-        batch_size=6,
+        # batch_size=6,
+        batch_size=batch_size,
         n_init="auto",
     ).fit(poly_terms)
     atoms = kmeans.cluster_centers_
@@ -46,20 +48,20 @@ def _plot_pca(u, y, n_sample, figure_name, random_state):
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-@click.option("--random", default=0, help="Random state (int)")
-def main(dataset, random) -> None:
+@click.option("--random_state", default=0, help="Random state (int)")
+def main(dataset, random_state) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_pca(train_val_u, train_val_y, 100, "pca_dsed.png", random)
+            _plot_pca(train_val_u, train_val_y, 60, 10, 100, "pca_dsed.png", random_state, max_delay=3)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png", random)
+            _plot_pca(train_val_u, train_val_y, 100, "pca_emps.png", random_state, max_delay=3)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png", random)
+            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png", random_state)
         case _:
             raise NameError(
                 "The dataset is not supported. Please choose from: dsed, emps, whbm"

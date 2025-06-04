@@ -14,10 +14,10 @@ from utils import (
 )
 
 
-def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercept=True):
+def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, n_random, figure_name, intercept=True):
     poly_terms, y, narx = get_narx_terms(u, y, intercept)
 
-    n_random = 20
+    """Plot the R2 for different batch sizes."""
     n_batches = len(batch_size_list)
     r2_fastcan = np.zeros((n_random, n_batches))
     columns = [*Progress.get_default_columns()]
@@ -45,7 +45,8 @@ def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name, intercep
 
 @click.command()
 @click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
-def main(dataset) -> None:
+@click.option("--n_random", default=10, help="Set the number of random tests")
+def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
@@ -56,7 +57,8 @@ def main(dataset) -> None:
                 np.linspace(2, 10, 5, dtype=int),
                 600,
                 60,
-                "batch_dsed.png",
+                n_random=n_random,
+                figure_name="batch_dsed.png",
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -65,11 +67,12 @@ def main(dataset) -> None:
                 train_val_u,
                 train_val_y,
                 # np.linspace(10, 100, 10, dtype=int),
-                np.linspace(1, 15, 8, dtype=int),
+                np.linspace(30, 250, 8, dtype=int),
                 10000,
-                700,
-                "batch_emps.png",
-                False,  # No intercept for EMPS dataset
+                40,
+                n_random=n_random,
+                figure_name="batch_emps.png",
+                intercept=False,  # No intercept for EMPS dataset
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -80,7 +83,8 @@ def main(dataset) -> None:
                 np.linspace(10, 100, 10, dtype=int),
                 10000,
                 100,
-                "batch_whbm.png",
+                n_random=n_random,
+                figure_name="batch_whbm.png",
             )
         case _:
             raise NameError(
