@@ -59,3 +59,15 @@ To set random state, run
 ```shell
 uv run plot_pca.py --random 123
 ```
+
+Generate all results for `dsed-eq` dataset
+```shell
+chmod +x run_dsed_eq.sh
+uv run ./run_dsed_eq.sh
+```
+
+Generate all results for `dsed-tr` dataset
+```shell
+chmod +x run_dsed_tr.sh
+uv run ./run_dsed_tr.sh
+```

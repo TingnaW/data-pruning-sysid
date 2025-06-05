@@ -15,6 +15,27 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 
+def get_dsed_eq():
+    x0_0 = np.linspace(0, 0.8, 98)
+    x0_1 = np.linspace(1, 1.5, 2)
+    x0 = np.r_[x0_0, x0_1]
+    y0_y = np.cos(np.pi * x0)
+    y0_x = np.sin(np.pi * x0)
+    y0 = np.c_[y0_x, y0_y]
+
+    u, y, _ = get_dual_stable_equilibria_data(y0=y0)
+    return u, y
+
+
+def get_dsed_tr():
+    u, y, _ = get_dual_stable_equilibria_data(
+        y0=[[0.6, 0.8], [-0.6, 0.8]],
+        dur=100,
+        n_samples=1000,
+    )
+    return u, y
+
+
 def get_r2(coef, bench_narx):
     if bench_narx.fit_intercept:
         return r2_score(
@@ -91,7 +112,7 @@ def get_narx_terms(u, y, intercept=True, max_delay=10):
 
     intercept : bool, optional, default=True
         Whether to include an intercept term in the model.
-    
+
     max_delay : int, optional, default=10
         Maximum delay for the NARX model.
 

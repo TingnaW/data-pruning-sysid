@@ -106,7 +106,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=3,
                 # n_atom_upper=120,
                 # n_atom_steps=40,
-                atom_step = [5, 10, 30, 60, 100, 150, 200],
+                atom_step=[5, 10, 30, 60, 100, 150, 200],
                 figure_name="sample_dsed.png",
                 n_random=n_random,
                 intercept=True,
