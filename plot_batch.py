@@ -8,13 +8,25 @@ from rich.progress import Progress, TimeRemainingColumn
 
 from utils import (
     fastcan_pruned_narx,
+    get_dsed_eq,
+    get_dsed_tr,
     get_dual_stable_equilibria_data,
     get_narx_terms,
     get_r2,
 )
 
 
-def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, n_random, figure_name, intercept=True, max_delay=10):
+def _plot_batch(
+    u,
+    y,
+    batch_size_list,
+    n_samples,
+    n_atoms,
+    n_random,
+    figure_name,
+    intercept=True,
+    max_delay=10,
+):
     poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
     """Plot the R2 for different batch sizes."""
@@ -44,10 +56,38 @@ def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, n_random, figure_name
 
 
 @click.command()
-@click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
+@click.option(
+    "--dataset",
+    default="dsed",
+    help="Choose dataset from: dsed, emps, whbm, dsed-eq, dsed-tr",
+)
 @click.option("--n_random", default=10, help="Set the number of random tests")
 def main(dataset, n_random) -> None:
     match dataset:
+        case "dsed-eq":
+            u, y = get_dsed_eq()
+            _plot_batch(
+                u,
+                y,
+                [1, 2, 3, 4, 5],
+                100,
+                20,
+                n_random=n_random,
+                figure_name="batch_dsed_eq.png",
+                max_delay=3,
+            )
+        case "dsed-tr":
+            u, y = get_dsed_tr()
+            _plot_batch(
+                u,
+                y,
+                [2, 4, 6, 8, 10],
+                100,
+                10,
+                n_random=n_random,
+                figure_name="batch_dsed_tr.png",
+                max_delay=3,
+            )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_batch(

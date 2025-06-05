@@ -8,6 +8,8 @@ from rich.progress import Progress, TimeRemainingColumn
 
 from utils import (
     fastcan_pruned_narx,
+    get_dsed_eq,
+    get_dsed_tr,
     get_dual_stable_equilibria_data,
     get_narx_terms,
     get_r2,
@@ -16,7 +18,18 @@ from utils import (
 
 
 def _plot_errorbar(
-    u, y, n_sample_lower, n_sample_upper, n_steps, n_atoms, twinx, figure_name, intercept=True, n_random=10, max_delay=10):
+    u,
+    y,
+    n_sample_lower,
+    n_sample_upper,
+    n_steps,
+    n_atoms,
+    twinx,
+    figure_name,
+    intercept=True,
+    n_random=10,
+    max_delay=10,
+):
     poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
 
     sample_step = int((n_sample_upper - n_sample_lower) / (n_steps - 1))
@@ -87,25 +100,66 @@ def _plot_errorbar(
 
 
 @click.command()
-@click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
+@click.option(
+    "--dataset",
+    default="dsed",
+    help="Choose dataset from: dsed, emps, whbm, dsed-eq, dsed-tr",
+)
 @click.option("--n_random", default=10, help="Set the number of random tests")
 def main(dataset, n_random) -> None:
     match dataset:
+        case "dsed-eq":
+            u, y = get_dsed_eq()
+            _plot_errorbar(
+                u,
+                y,
+                40,
+                130,
+                10,
+                20,
+                False,
+                "errorbar_dsed_eq.png",
+                n_random=10,
+                max_delay=3,
+            )
+        case "dsed-tr":
+            u, y = get_dsed_tr()
+            _plot_errorbar(
+                u,
+                y,
+                20,
+                110,
+                10,
+                20,
+                False,
+                "errorbar_dsed_tr.png",
+                n_random=10,
+                max_delay=3,
+            )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_errorbar(
-                train_val_u, train_val_y, 300, 600, 11, 60, False, "errorbar_dsed.png", n_random=n_random, max_delay=3
+                train_val_u,
+                train_val_y,
+                300,
+                600,
+                11,
+                60,
+                False,
+                "errorbar_dsed.png",
+                n_random=n_random,
+                max_delay=3,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
             _plot_errorbar(
-                train_val_u, 
-                train_val_y, 
-                4000, 
-                20000, 
-                9, 
+                train_val_u,
+                train_val_y,
+                4000,
+                20000,
+                9,
                 40,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",

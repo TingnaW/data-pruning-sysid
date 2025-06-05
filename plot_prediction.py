@@ -92,7 +92,7 @@ def main(dataset, nterms, delay, poly) -> None:
                 poly,
                 100,
                 "pred_test_dsed_2.png",
-                narx
+                narx,
             )
         case "emps":
             train_val, test_val = nonlinear_benchmarks.EMPS()
