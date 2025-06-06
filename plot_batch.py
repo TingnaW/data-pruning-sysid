@@ -94,9 +94,9 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 # np.linspace(2, 6, 5, dtype=int),
-                np.linspace(2, 10, 5, dtype=int),
-                600,
-                60,
+                np.linspace(1, 5, 5, dtype=int),
+                100,
+                20,
                 n_random=n_random,
                 figure_name="batch_dsed.png",
                 max_delay=3,
@@ -107,14 +107,22 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                # np.linspace(10, 100, 10, dtype=int),
-                np.linspace(30, 250, 8, dtype=int),
-                10000,
-                40,
+                np.linspace(2, 20, 10, dtype=int),
+                100,
+                5,
+                # np.linspace(5, 50, 10, dtype=int),
+                # 100,
+                # 2,
+                # np.linspace(1, 10, 10, dtype=int),
+                # 100,
+                # 10,
+                # np.linspace(1, 5, 5, dtype=int),
+                # 100,
+                # 20,
                 n_random=n_random,
                 figure_name="batch_emps.png",
                 # intercept=False,  # No intercept for EMPS dataset
-                max_delay=3,
+                max_delay=6,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -122,11 +130,12 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(10, 100, 10, dtype=int),
-                10000,
+                np.linspace(2, 20, 10, dtype=int),
                 100,
+                5,
                 n_random=n_random,
                 figure_name="batch_whbm.png",
+                max_delay=7,
             )
         case _:
             raise NameError(
