@@ -126,33 +126,15 @@ def main(dataset, random_state) -> None:
             )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_pca(
-                train_val_u,
-                train_val_y,
-                60,
-                1000000,
-                100,
-                "pca_dsed.png",
-                random_state,
-                max_delay=3,
-            )
+            _plot_pca(train_val_u, train_val_y, 20, 1000000, 100, "pca_dsed.png", random_state, max_delay=3)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
-            _plot_pca(
-                train_val_u,
-                train_val_y,
-                60,
-                1000000,
-                100,
-                "pca_emps.png",
-                random_state,
-                max_delay=3,
-            )
+            _plot_pca(train_val_u, train_val_y, 5, 1000000, 100, "pca_emps.png", random_state, max_delay=6)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
-            _plot_pca(train_val_u, train_val_y, 100, "pca_whbm.png", random_state)
+            _plot_pca(train_val_u, train_val_y, 5, 1000000, 100, "pca_whbm.png", random_state, max_delay=10)
         case _:
             raise NameError(
                 "The dataset is not supported. Please choose from: dsed, emps, whbm"

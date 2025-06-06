@@ -90,8 +90,8 @@ def main(dataset, n_random) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                [5, 10, 30, 60, 100, 150, 200],
-                600,
+                [2, 5, 10, 15, 20, 30, 50, 70],
+                100,
                 n_random=n_random,
                 figure_name="atom_dsed.png",
                 max_delay=3,
@@ -102,12 +102,12 @@ def main(dataset, n_random) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                [10, 40, 70, 100, 400, 700, 1000, 2000],
-                10000,
+                [2, 5, 10, 15, 20, 30, 50, 70],
+                100,
                 n_random=n_random,
                 figure_name="atom_emps.png",
                 # intercept=False,  # No intercept for EMPS dataset
-                max_delay=3,
+                max_delay=6,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -115,10 +115,11 @@ def main(dataset, n_random) -> None:
             _plot_atom(
                 train_val_u,
                 train_val_y,
-                [10, 40, 70, 100, 400, 700, 1000, 2000],
-                10000,
+                [2, 5, 10, 15, 20, 30, 50, 70],
+                100,
                 n_random=n_random,
                 figure_name="atom_whbm.png",
+                max_delay=7,
             )
         case _:
             raise NameError(
