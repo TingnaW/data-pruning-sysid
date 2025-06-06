@@ -53,16 +53,16 @@ def main(dataset, n_random) -> None:
     match dataset:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
-            _plot_box(train_val_u, train_val_y, 100, 60, False, "box_dsed.png", n_random=n_random, max_delay=3)
+            _plot_box(train_val_u, train_val_y, 100, 20, False, "box_dsed.png", n_random=n_random, max_delay=3)
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
-            _plot_box(train_val_u, train_val_y, 6000, 40, False, "box_emps.png",n_random=n_random, max_delay=3)
+            _plot_box(train_val_u, train_val_y, 100, 5, False, "box_emps.png",n_random=n_random, max_delay=6)
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
-            _plot_box(train_val_u, train_val_y, 10000, False, "box_whbm.png",n_random=n_random)
+            _plot_box(train_val_u, train_val_y, 100, 5, False, "box_whbm.png",n_random=n_random, max_delay=7)
         case _:
             raise NameError(
                 "The dataset is not supported. Please choose from: dsed, emps, whbm"
