@@ -4,10 +4,10 @@ The research results for the 9th Edition of the Workshop on Nonlinear System Ide
 
 ## 1. Install Python package and project manager `uv`
 
-The detailed installation instructions can be found [here](https://docs.astral.sh/uv/getting-started/installation/).
-
+The detailed installation instructions can be found [uv installation](https://docs.astral.sh/uv/getting-started/installation/).
 
 ### For macOS and Linux
+
 Use `curl` to download the script and execute it with `sh`:
 
 ```shell
@@ -35,11 +35,15 @@ Generate box plot results.
 ```shell
 uv run plot_box.py
 ```
+
 To set the dataset, run
+
 ```shell
 uv run plot_box.py --dataset emps
 ```
+
 To see help, run
+
 ```shell
 uv run plot_box.py --help
 ```
@@ -55,19 +59,29 @@ Generate PCA plot results.
 ```shell
 uv run plot_pca.py
 ```
+
 To set random state, run
+
 ```shell
 uv run plot_pca.py --random 123
 ```
 
 Generate all results for `dsed-eq` dataset
+
 ```shell
 chmod +x run_dsed_eq.sh
 uv run ./run_dsed_eq.sh
 ```
 
 Generate all results for `dsed-tr` dataset
+
 ```shell
 chmod +x run_dsed_tr.sh
 uv run ./run_dsed_tr.sh
+```
+
+Print NARX terms and training R2 score
+
+```shell
+uv run print_terms.py --dataset emps --delay 6
 ```

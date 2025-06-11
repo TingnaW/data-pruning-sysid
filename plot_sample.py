@@ -4,7 +4,6 @@ import click
 import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 import numpy as np
-from matplotlib.colors import LogNorm
 from rich.progress import Progress, TimeRemainingColumn
 
 from utils import (
@@ -63,7 +62,7 @@ def _plot_sample(
     # Generate plot
     # r2_mean = 1 - r2_fastcan.mean(axis=0)
     r2_mean = r2_fastcan.mean(axis=0)
-    fonts =15
+    fonts = 15
     fig, ax = plt.subplots(figsize=(10, 8))
     im = ax.imshow(
         r2_mean.T,
@@ -77,7 +76,6 @@ def _plot_sample(
     cbar.set_label("R2", fontsize=12)
     cbar.ax.tick_params(labelsize=12)
 
-
     sample_ticks = np.linspace(
         n_sample_lower, n_sample_upper, n_sample_steps, endpoint=True
     )
@@ -85,11 +83,11 @@ def _plot_sample(
     atom_ticks = atom_step
 
     ax.set_xticks(range(n_sample_steps))
-    ax.set_xticklabels([f"{int(x)}" for x in sample_ticks], fontsize=fonts )
+    ax.set_xticklabels([f"{int(x)}" for x in sample_ticks], fontsize=fonts)
     ax.set_yticks(range(n_atom_steps))
-    ax.set_yticklabels([f"{int(x)}" for x in atom_ticks], fontsize=fonts )
-    ax.set_xlabel("Number of Samples", fontsize=fonts )
-    ax.set_ylabel("Number of Atoms", fontsize=fonts )
+    ax.set_yticklabels([f"{int(x)}" for x in atom_ticks], fontsize=fonts)
+    ax.set_xlabel("Number of Samples", fontsize=fonts)
+    ax.set_ylabel("Number of Atoms", fontsize=fonts)
 
     plt.tight_layout()
     fig.savefig(figure_name, bbox_inches="tight")
@@ -113,7 +111,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=3,
                 # n_atom_upper=120,
                 # n_atom_steps=40,
-                 atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
                 figure_name="sample_dsed.png",
                 n_random=n_random,
                 intercept=True,
