@@ -139,27 +139,27 @@ def main(dataset, n_random) -> None:
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_errorbar(
-                train_val_u, 
-                train_val_y, 
-                50, 
-                150, 
-                11, 
-                20, 
-                False, 
-                "errorbar_dsed.png", 
-                n_random=n_random, 
-                max_delay=3
+                train_val_u,
+                train_val_y,
+                50,
+                150,
+                11,
+                20,
+                False,
+                "errorbar_dsed.png",
+                n_random=n_random,
+                max_delay=3,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
             train_val_u, train_val_y = train_val
             # No intercept for EMPS dataset
             _plot_errorbar(
-                train_val_u, 
-                train_val_y, 
-                20, 
-                120, 
-                11, 
+                train_val_u,
+                train_val_y,
+                20,
+                120,
+                11,
                 5,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",
@@ -171,14 +171,14 @@ def main(dataset, n_random) -> None:
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
             train_val_u, train_val_y = train_val
             _plot_errorbar(
-                train_val_u, 
-                train_val_y, 
-                20, 
-                120, 
-                11, 
+                train_val_u,
+                train_val_y,
+                20,
+                120,
+                11,
                 5,  # No atoms for WHBM dataset
-                False, 
-                "errorbar_whbm.png", 
+                False,
+                "errorbar_whbm.png",
                 n_random=n_random,
                 max_delay=7,
             )

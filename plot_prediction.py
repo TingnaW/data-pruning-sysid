@@ -6,7 +6,7 @@ import nonlinear_benchmarks
 from fastcan.narx import make_narx
 from sklearn.metrics import r2_score
 
-from utils import get_dual_stable_equilibria_data
+from utils import get_dsed_eq, get_dsed_tr, get_dual_stable_equilibria_data
 
 
 def _plot_prediction(
@@ -51,12 +51,90 @@ def _plot_prediction(
 
 
 @click.command()
-@click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
+@click.option(
+    "--dataset",
+    default="dsed",
+    help="Choose dataset from: dsed, emps, whbm, dsed-eq, dsed-tr",
+)
 @click.option("--nterms", default=10, help="Number of NARX terms (int)")
 @click.option("--delay", default=10, help="Maximum delay (int)")
 @click.option("--poly", default=3, help="Maximum polynomial degree of NARX terms (int)")
 def main(dataset, nterms, delay, poly) -> None:
     match dataset:
+        case "dsed-eq":
+            train_val_u, train_val_y = get_dsed_eq()
+            test_val_u1, test_val_y1, _ = get_dual_stable_equilibria_data(
+                y0=[[0.6, 0.8]]
+            )
+            test_val_u2, test_val_y2, _ = get_dual_stable_equilibria_data(
+                y0=[[-0.6, 0.8]]
+            )
+            narx = _plot_prediction(
+                train_val_u,
+                train_val_y,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_train_dsed_eq.png",
+            )
+            _plot_prediction(
+                test_val_u1,
+                test_val_y1,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_test_dsed_eq_1.png",
+                narx,
+            )
+            _plot_prediction(
+                test_val_u2,
+                test_val_y2,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_test_dsed_eq_2.png",
+                narx,
+            )
+        case "dsed-tr":
+            train_val_u, train_val_y = get_dsed_tr()
+            test_val_u1, test_val_y1, _ = get_dual_stable_equilibria_data(
+                y0=[[0.6, 0.8]]
+            )
+            test_val_u2, test_val_y2, _ = get_dual_stable_equilibria_data(
+                y0=[[-0.6, 0.8]]
+            )
+            narx = _plot_prediction(
+                train_val_u,
+                train_val_y,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_train_dsed_tr.png",
+            )
+            _plot_prediction(
+                test_val_u1,
+                test_val_y1,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_test_dsed_tr_1.png",
+                narx,
+            )
+            _plot_prediction(
+                test_val_u2,
+                test_val_y2,
+                nterms,
+                delay,
+                poly,
+                100,
+                "pred_test_dsed_tr_2.png",
+                narx,
+            )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             test_val_u1, test_val_y1, _ = get_dual_stable_equilibria_data(
