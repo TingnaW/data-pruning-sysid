@@ -228,7 +228,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.7" },
-    { name = "fastcan", git = "https://github.com/scikit-learn-contrib/fastcan" },
+    { name = "fastcan", specifier = ">=0.4.0" },
     { name = "matplotlib", specifier = ">=3.10.0" },
     { name = "nonlinear-benchmarks", specifier = ">=1.0.0" },
     { name = "rich", specifier = ">=14.0.0" },
@@ -281,9 +281,27 @@ wheels = [
 [[package]]
 name = "fastcan"
 version = "0.4.0"
-source = { git = "https://github.com/scikit-learn-contrib/fastcan#a506a73d42e2e0e816f0cc8a6f165fab4c7de887" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scikit-learn" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c7/46/f1dd944c32157ff364933ac62955f529b6d2cdda959bd4bb02d5b5397b47/fastcan-0.4.0.tar.gz", hash = "sha256:43f93e709bdf83f2a6ac7db1e8643ab0f916b28eda20df7aeae92c74d2092b00", size = 323729, upload-time = "2025-06-12T02:19:28.778Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5d/df/378e1654b50e8a0f0e3e7dbf8879c39345d54047ad4928386d4ddebdc565/fastcan-0.4.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:1efec2f28ed909b4069a2a6316afaa00df18c7d8456688f2b2ff2d6e8ae66893", size = 207406, upload-time = "2025-06-12T02:19:08.662Z" },
+    { url = "https://files.pythonhosted.org/packages/00/3c/86ad13e73b01aedc1f232bc4e16a07d8eb9f147e37a38c4cc0fe22cda59b/fastcan-0.4.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4103e0eebfa36136fffe8ae9f456dee67e5727d44f34be199400c7bc1a577a94", size = 191768, upload-time = "2025-06-12T02:19:10.149Z" },
+    { url = "https://files.pythonhosted.org/packages/97/91/8cd21013aae3ae5cce4b78f1b86a2db0263ca7a21eee67e16cbbd9b2db3a/fastcan-0.4.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5dcbb1f203b44b1f97432b326d06adacd6cc83e65d2b3c6de2b54ee9e5d08a0a", size = 361904, upload-time = "2025-06-12T02:19:11.477Z" },
+    { url = "https://files.pythonhosted.org/packages/fd/45/002441e25b2ea6be61fc81bd1ab757babc4e6e51ba97be3fa48dc6edee91/fastcan-0.4.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:07cc06154b2804ee8f1a6fa66da4cf732026bc1effcfb8a11adf0e115043dead", size = 376165, upload-time = "2025-06-12T02:19:12.638Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/a2/6773fcd62c32bea017b0fdf757ea9264abaec85222eb565e3464e41bfbb4/fastcan-0.4.0-cp312-cp312-win_amd64.whl", hash = "sha256:e136683770d61a1024680e5385e8eddd3db6056b8cd5ba7ddf47a1e847cb701f", size = 200882, upload-time = "2025-06-12T02:19:14.051Z" },
+    { url = "https://files.pythonhosted.org/packages/94/c4/5519ca0e02872c6dcc772af9ae161f1372a0c21b6d7fd9a2c2b0bb19a498/fastcan-0.4.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:93bdf3111305a55e1b1d7376210794c93b0570cff5f47b9d0b906936b9f3bae7", size = 205380, upload-time = "2025-06-12T02:19:15.263Z" },
+    { url = "https://files.pythonhosted.org/packages/43/a1/b56db84dafd640d33e76210c959ed419b3058f6ce35e7016faa1886d2e13/fastcan-0.4.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:45f66691159626d5f3ca72d12ac1c4deee9467ac93a3f2bea0a1ab194facee76", size = 190047, upload-time = "2025-06-12T02:19:16.791Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/ea/2ab086f970ce21e873c641fb1ddf61d0f3775f94877679eda96e667b18bb/fastcan-0.4.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3cb965278352635b5e536f807b573c5b9d0a0dca9d6bf03a3d928fc97895422d", size = 364716, upload-time = "2025-06-12T02:19:17.966Z" },
+    { url = "https://files.pythonhosted.org/packages/c3/57/b085582c23a07654b1e83eb75246b2594cabed4bcc5f48b92d48165610ab/fastcan-0.4.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:24763e8e1efdbb35d40bbf440b58317e95cfe21aa000daf96928fbd0d5792bcd", size = 374133, upload-time = "2025-06-12T02:19:19.48Z" },
+    { url = "https://files.pythonhosted.org/packages/79/7c/d72a698b5439a80e1713f766e0b56404fa2d5ed23403c9f63c1a557a4373/fastcan-0.4.0-cp313-cp313-win_amd64.whl", hash = "sha256:dd1e2aad97ee36c60969703ed5eea4bd41afc2b1638d87f670c44dba8370dcac", size = 200333, upload-time = "2025-06-12T02:19:21.041Z" },
+    { url = "https://files.pythonhosted.org/packages/22/3f/7752fb6bf2b966a28928c60fc13d4a2e824ee8311423db415e602d3fcda5/fastcan-0.4.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:ad342282dd8633aa2bc3b7f1166b6816be8dc9fff7764619f797021af8e14660", size = 228461, upload-time = "2025-06-12T02:19:22.167Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/1d/78eaca6438728b9a613a7d75839e287b2c49213f4dec8d3c0d32e77979ca/fastcan-0.4.0-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:8834d20809312b7a449fb1bee71d9559a8c64e385cc792049a123b723586f46a", size = 207499, upload-time = "2025-06-12T02:19:23.431Z" },
+    { url = "https://files.pythonhosted.org/packages/13/fd/77dd4148eec4c691f7436632e668c5266c7f18ab9f31bcb80dbf076c081e/fastcan-0.4.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e553afa8e88a42e6e2914c4d7c8052d1f46ff850fba762593c0e5f5c0723dc16", size = 360724, upload-time = "2025-06-12T02:19:24.595Z" },
+    { url = "https://files.pythonhosted.org/packages/38/ef/33252ec03ed8b5cd4c1a404c5771bcb6c094046795872eecab7c54729b9f/fastcan-0.4.0-cp313-cp313t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a6453190128cb2d65d53c5dfcf450af69e117695e59fe81c25fbe6c76af8863b", size = 373136, upload-time = "2025-06-12T02:19:25.963Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/0f/76a725d854ec6833544eb5c774d9c8f3403bc5b3dd27a36a448958d69ccc/fastcan-0.4.0-cp313-cp313t-win_amd64.whl", hash = "sha256:0b51720b01af3040a34330be78740fc3d107a8212cda81adbab0203718fd8eac", size = 227677, upload-time = "2025-06-12T02:19:27.257Z" },
 ]
 
 [[package]]
