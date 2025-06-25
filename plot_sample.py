@@ -63,11 +63,11 @@ def _plot_sample(
     print("Results have been saved to " + figure_name[:-4] + ".npy")
     # Generate plot
     # r2_mean = 1 - r2_fastcan.mean(axis=0)
-    r2_mean = r2_fastcan.mean(axis=0)
+    r2_mean = r2_fastcan.mean(axis=0).T
     fonts = 15
     fig, ax = plt.subplots(figsize=(10, 8))
     im = ax.imshow(
-        r2_mean.T,
+        r2_mean,
         cmap="jet",
         aspect="auto",
         origin="lower",
@@ -77,6 +77,13 @@ def _plot_sample(
     # cbar.set_label("1-R2", fontsize=12)
     cbar.set_label("R2", fontsize=12)
     cbar.ax.tick_params(labelsize=12)
+
+    # Find and display the maximum value in each column of the heatmap
+    for col in range(r2_mean.shape[1]):
+        col_max_value = r2_mean[:, col].max()
+        col_max_row = np.argmax(r2_mean[:, col])
+        ax.text(col, col_max_row, f'{col_max_value:.3f}',
+                ha='center', va='center', color='black', fontsize=12, fontweight='bold')
 
     sample_ticks = np.linspace(
         n_sample_lower, n_sample_upper, n_sample_steps, endpoint=True
