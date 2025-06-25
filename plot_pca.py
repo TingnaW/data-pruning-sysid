@@ -64,19 +64,19 @@ def _plot_pca(
                 (mask > (1000 - narx.max_delay_)) & (mask < (1000 - narx.max_delay_) + 100)
             )
         plt.scatter(
-            pcs_all[mask, 0], pcs_all[mask, 1], s=50, c="tab:blue"
+            pcs_all[mask, 0], pcs_all[mask, 1], s=50, marker="o", c="tab:blue"
         )
         plt.scatter(
-            pcs_all[~mask, 0], pcs_all[~mask, 1], s=50, c="tab:purple"
+            pcs_all[~mask, 0], pcs_all[~mask, 1], s=50, marker="o", c="tab:purple"
         )
     else:
-        plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=50)
+        plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=50, marker="o", c="tab:blue")
         
     plt.scatter(
-        pcs_fastcan[:, 0], pcs_fastcan[:, 1], s=5, marker="o", alpha=0.9, c="tab:orange"
+        pcs_fastcan[:, 0], pcs_fastcan[:, 1], s=30, marker="o", alpha=0.9, c="tab:orange"
     )
     plt.scatter(
-        pcs_random[:, 0], pcs_random[:, 1], s=30, marker="*", alpha=0.9, c="tab:green"
+        pcs_random[:, 0], pcs_random[:, 1], s=20, marker="*", alpha=0.9, c="tab:green"
     )
     plt.scatter(
         pcs_atoms[:, 0], pcs_atoms[:, 1], s=100, marker="+", alpha=0.9, c="tab:red"

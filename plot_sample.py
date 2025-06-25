@@ -142,7 +142,7 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 n_sample_lower=50,
-                n_sample_upper=250,
+                n_sample_upper=150,
                 n_sample_steps=11,
                 # n_atom_lower=3,
                 # n_atom_upper=120,
