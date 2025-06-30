@@ -69,17 +69,35 @@ def main(dataset, n_random) -> None:
     match dataset:
         case "dsed-eq":
             u, y = get_dsed_eq()
-            _plot_box(u, y, 100, 20, False, "box_dsed_eq.png", n_random=10, max_delay=4)
+            _plot_box(u, 
+                      y, 
+                      100, 
+                      20, 
+                      False, 
+                      "box_dsed_eq.png", 
+                      n_random=10, 
+                      max_delay=4
+            )
         case "dsed-tr":
             u, y = get_dsed_tr()
-            _plot_box(u, y, 100, 20, False, "box_dsed_tr.png", n_random=10, max_delay=6)
+            _plot_box(u, 
+                      y, 
+                      100, 
+                      20, 
+                      False, 
+                      "box_dsed_tr.png", 
+                      n_random=10, 
+                      max_delay=6
+            )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_box(
                 train_val_u,
                 train_val_y,
-                100,
-                15,
+                # 100,
+                # 15,
+                60,
+                5,
                 False,
                 "box_dsed.png",
                 n_random=n_random,
@@ -92,8 +110,10 @@ def main(dataset, n_random) -> None:
             _plot_box(
                 train_val_u,
                 train_val_y,
-                100,
-                10,
+                # 100,
+                # 10,
+                50,
+                70,
                 False,
                 "box_emps.png",
                 n_random=n_random,
@@ -105,8 +125,10 @@ def main(dataset, n_random) -> None:
             _plot_box(
                 train_val_u,
                 train_val_y,
-                100,
-                5,
+                # 100,
+                # 5,
+                40,
+                10,
                 False,
                 "box_whbm.png",
                 n_random=n_random,

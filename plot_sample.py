@@ -83,7 +83,7 @@ def _plot_sample(
         col_max_value = r2_mean[:, col].max()
         col_max_row = np.argmax(r2_mean[:, col])
         ax.text(col, col_max_row, f'{col_max_value:.3f}',
-                ha='center', va='center', color='black', fontsize=12, fontweight='bold')
+                ha='center', va='center', color='black', fontsize=12)
 
     sample_ticks = np.linspace(
         n_sample_lower, n_sample_upper, n_sample_steps, endpoint=True
