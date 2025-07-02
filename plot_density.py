@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from rich.progress import Progress, TimeRemainingColumn
 import click
+import nonlinear_benchmarks
 
 from utils import get_dsed_eq, get_dsed_tr, get_dual_stable_equilibria_data, get_narx_terms, get_r2, fastcan_pruned_narx, random_pruned_narx
 
@@ -19,7 +20,8 @@ def _plot_density(
     n_random = 10
     n_levels = len(n_samples_list)
     poly_terms, y, narx = get_narx_terms(u, y, max_delay=max_delay)
-    n_original = u.size + y.size
+    # n_original = u.size + y.size
+    n_original = (u.size + y.size)-(max_delay+1)+1
 
     r2_fastcan = np.zeros((n_levels, n_random))
     r2_random = np.zeros((n_levels, n_random))
@@ -31,7 +33,8 @@ def _plot_density(
         t2 = pb.add_task("[green]Random test...", total=n_random)
         for i in range(n_levels):
             n_samples = n_samples_list[i]
-            density_level = (poly_terms.shape[1] + 1) * n_samples / n_original
+            # density_level = (poly_terms.shape[1] + 1) * n_samples / n_original
+            density_level = n_samples / n_original
             density_percentage.append(density_level*100)
             for j in range(n_random):
                 coef = fastcan_pruned_narx(
@@ -58,7 +61,7 @@ def _plot_density(
         mean_r2_fastcan - std_r2_fastcan,
         mean_r2_fastcan + std_r2_fastcan,
         alpha=0.2,
-        label="FastCAN std",
+        label="FastCan SD",
     )
 
     plt.plot(density_percentage, mean_r2_random, label="Random mean", marker='x')
@@ -67,12 +70,15 @@ def _plot_density(
         mean_r2_random - std_r2_random,
         mean_r2_random + std_r2_random,
         alpha=0.2,
-        label="Random std",
+        label="Random SD",
     )
-
-    plt.xlabel("Density (%)")
-    plt.ylabel("R2")
-    plt.legend()
+    
+    fonts = 14
+    plt.xlabel("Percentage of selected samples (%)", fontsize=fonts)
+    plt.ylabel("R-squared", fontsize=fonts)
+    # Tick label font size
+    plt.tick_params(axis='both', labelsize=fonts)
+    plt.legend(fontsize=fonts)
     plt.grid(True)
 
     plt.savefig(figure_name, bbox_inches="tight")
@@ -93,8 +99,8 @@ def main(dataset) -> None:
                 u,
                 y,
                 n_atoms=20,
-                max_delay=10,
-                n_samples_list=np.linspace(40, 130, 10, dtype=int),
+                max_delay=4,
+                n_samples_list=np.linspace(50, 150, 11, dtype=int),
                 figure_name="density_dsed_eq.png",
             )
         case "dsed-tr":
@@ -102,9 +108,9 @@ def main(dataset) -> None:
             _plot_density(
                 u,
                 y,
-                n_atoms=10,
-                max_delay=10,
-                n_samples_list=np.linspace(20, 110, 10, dtype=int),
+                n_atoms=20,
+                max_delay=6,
+                n_samples_list=np.linspace(50, 150, 11, dtype=int),
                 figure_name="density_dsed_tr.png",
             )
         case "dsed":
@@ -112,10 +118,33 @@ def main(dataset) -> None:
             _plot_density(
                 train_val_u,
                 train_val_y,
-                n_atoms=20,
-                max_delay=10,
-                n_samples_list=np.linspace(40, 90, 11, dtype=int),
+                n_atoms=15,
+                max_delay=4,
+                n_samples_list=np.linspace(50, 150, 11, dtype=int),
                 figure_name="density_dsed.png",
+            )
+
+        case "emps":
+            train_val, _ = nonlinear_benchmarks.EMPS()
+            train_val_u, train_val_y = train_val
+            _plot_density(
+                train_val_u,
+                train_val_y,
+                n_atoms=25,
+                max_delay=4,
+                n_samples_list=np.linspace(20, 120, 11, dtype=int),
+                figure_name="density_emps.png",
+            )
+        case "whbm":
+            train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
+            train_val_u, train_val_y = train_val
+            _plot_density(
+                train_val_u,
+                train_val_y,
+                n_atoms=5,
+                max_delay=7,
+                n_samples_list=np.linspace(20, 120, 11, dtype=int),
+                figure_name="density_whbm.png",
             )
 
 if __name__ == "__main__":

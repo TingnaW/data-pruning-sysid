@@ -64,7 +64,7 @@ def _plot_sample(
     # Generate plot
     # r2_mean = 1 - r2_fastcan.mean(axis=0)
     r2_mean = r2_fastcan.mean(axis=0).T
-    fonts = 15
+    fonts = 18
     fig, ax = plt.subplots(figsize=(10, 8))
     im = ax.imshow(
         r2_mean,
@@ -74,16 +74,16 @@ def _plot_sample(
         # norm=LogNorm(vmin=r2_mean.min(), vmax=r2_mean.max()),
     )
     cbar = plt.colorbar(im, ax=ax)
-    # cbar.set_label("1-R2", fontsize=12)
-    cbar.set_label("R2", fontsize=12)
-    cbar.ax.tick_params(labelsize=12)
+    # cbar.set_label("1-R2", fontsize=fonts)
+    cbar.set_label("R-squared", fontsize=fonts)
+    cbar.ax.tick_params(labelsize=fonts)
 
     # Find and display the maximum value in each column of the heatmap
     for col in range(r2_mean.shape[1]):
         col_max_value = r2_mean[:, col].max()
         col_max_row = np.argmax(r2_mean[:, col])
         ax.text(col, col_max_row, f'{col_max_value:.3f}',
-                ha='center', va='center', color='black', fontsize=12)
+                ha='center', va='center', color='black', fontsize=fonts-2)
 
     sample_ticks = np.linspace(
         n_sample_lower, n_sample_upper, n_sample_steps, endpoint=True
@@ -95,8 +95,8 @@ def _plot_sample(
     ax.set_xticklabels([f"{int(x)}" for x in sample_ticks], fontsize=fonts)
     ax.set_yticks(range(n_atom_steps))
     ax.set_yticklabels([f"{int(x)}" for x in atom_ticks], fontsize=fonts)
-    ax.set_xlabel("Number of Samples", fontsize=fonts)
-    ax.set_ylabel("Number of Atoms", fontsize=fonts)
+    ax.set_xlabel("Number of selected samples", fontsize=fonts)
+    ax.set_ylabel("Number of atoms", fontsize=fonts)
 
     plt.tight_layout()
     fig.savefig(figure_name, bbox_inches="tight")
@@ -120,7 +120,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=3,
                 # n_atom_upper=120,
                 # n_atom_steps=40,
-                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed_eq.png",
                 n_random=n_random,
                 intercept=True,
@@ -137,7 +138,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=3,
                 # n_atom_upper=120,
                 # n_atom_steps=40,
-                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed_tr.png",
                 n_random=n_random,
                 intercept=True,
@@ -154,7 +156,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=3,
                 # n_atom_upper=120,
                 # n_atom_steps=40,
-                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed.png",
                 n_random=n_random,
                 intercept=True,
@@ -173,7 +176,8 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=200,
                 # n_atom_upper=1200,
                 # n_atom_steps=6,
-                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_emps.png",
                 n_random=n_random,
                 intercept=False,
@@ -191,7 +195,9 @@ def main(dataset, n_random) -> None:
                 # n_atom_lower=200,
                 # n_atom_upper=1200,
                 # n_atom_steps=6,
-                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                # atom_step=[15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_whbm.png",
                 n_random=n_random,
                 intercept=True,

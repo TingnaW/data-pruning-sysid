@@ -81,9 +81,14 @@ def _plot_pca(
     plt.scatter(
         pcs_atoms[:, 0], pcs_atoms[:, 1], s=100, marker="+", alpha=0.9, c="tab:red"
     )
-    plt.xlabel("The First Principle Component")
-    plt.ylabel("The Second Principle Component")
-    plt.legend(split_labels + ["FastCan pruned", "Random pruned", "Atoms"])
+
+    fonts = 14
+    plt.xlabel("The first principle component", fontsize=fonts)
+    plt.ylabel("The second principle component", fontsize=fonts)
+    plt.legend(split_labels + ["FastCan pruned", "Random pruned", "Atoms"], fontsize = fonts)
+    # Change font size of tick labels on both axes
+    plt.tick_params(axis='x', labelsize=fonts)
+    plt.tick_params(axis='y', labelsize=fonts)
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
     print("Image " + figure_name + " has been generated.")
@@ -144,7 +149,7 @@ def main(dataset, random_state) -> None:
             _plot_pca(
                 train_val_u,
                 train_val_y,
-                10,
+                25,
                 1000000,
                 100,
                 "pca_emps.png",

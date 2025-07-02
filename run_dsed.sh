@@ -22,4 +22,7 @@ python plot_batch.py --dataset dsed --n_random 10
 echo "Running plot_sample.py...random10"
 python plot_sample.py --dataset dsed --n_random 10
 
+echo "Running plot_density.py...random10"
+python plot_density.py --dataset dsed
+
 echo "All scripts completed."

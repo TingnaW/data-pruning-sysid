@@ -35,15 +35,18 @@ def _plot_prediction(
         )
     y_hat = narx.predict(u.reshape(-1, 1), y_init=y[: narx.max_delay_])
 
+    fonts = 15  # Define your desired font size
     plt.plot(y[:plot_n_samples], label="True")
     plt.plot(y_hat[:plot_n_samples], label="Predicted")
-    plt.xlabel("Time index k")
-    plt.legend()
+    # Tick label font size
+    plt.tick_params(axis='both', labelsize=fonts)
+    plt.xlabel("Time index",fontsize=fonts)
+    plt.ylabel("Amplitude", fontsize=fonts)  # Optional, if needed
+    plt.legend(fontsize=fonts)
     plt.title(
         f"NARX prediction results (R-squared: {
             r2_score(y[:plot_n_samples], y_hat[:plot_n_samples]):.5f
-        })"
-    )
+        })", fontsize=fonts)
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
     print("Image " + figure_name + " has been generated.")

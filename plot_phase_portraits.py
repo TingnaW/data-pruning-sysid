@@ -11,8 +11,10 @@ def main():
     n_init = len(sol)
     for i in range(n_init):
         plt.plot(sol[i, :, 0], sol[i, :, 1], c="tab:blue")
-    plt.xlabel("y(t)")
-    plt.ylabel("dy/dt(t)")
+    fonts =13
+    plt.xlabel("y(t)", fontsize=fonts)
+    plt.ylabel("dy/dt(t)",fontsize=fonts)
+    plt.tick_params(axis='both', labelsize=fonts)
     plt.savefig(figure_name, bbox_inches="tight")
     print("Image " + figure_name + " has been generated.")
 

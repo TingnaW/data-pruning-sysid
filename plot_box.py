@@ -42,16 +42,21 @@ def _plot_box(
             poly_terms, y, n_samples_to_select, i, intercept=intercept
         )
         r2_random[i] = get_r2(coef, narx)
+
+    fonts = 14 
     fig, ax1 = plt.subplots()
     ax1.boxplot(r2_fastcan.reshape(-1, 1), positions=[1])
     if twinx:
         ax2 = ax1.twinx()
         ax2.boxplot(r2_random.reshape(-1, 1), positions=[2])
-        ax2.set_ylabel("R2")
+        ax2.set_ylabel("R-squared",fontsize=fonts)
+        ax2.tick_params(axis='y', labelsize=fonts)
     else:
         ax1.boxplot(r2_random.reshape(-1, 1), positions=[2])
-    ax1.set_ylabel("R2")
-    ax1.set_xticks(ticks=[1, 2], labels=["FastCan", "Random"])
+        ax1.set_ylabel("R-squared", fontsize=fonts)
+        ax1.tick_params(axis='y', labelsize=fonts)
+    ax1.set_xticks(ticks=[1, 2], labels=["FastCan", "Random"], fontsize=fonts)
+   
 
     fig.savefig(figure_name, bbox_inches="tight")
     plt.close()
@@ -81,7 +86,6 @@ def main(dataset, n_random) -> None:
         case "dsed-tr":
             u, y = get_dsed_tr()
             _plot_box(u, 
-                      y, 
                       100, 
                       20, 
                       False, 
@@ -110,10 +114,8 @@ def main(dataset, n_random) -> None:
             _plot_box(
                 train_val_u,
                 train_val_y,
-                # 100,
-                # 10,
-                50,
-                70,
+                100,
+                25,
                 False,
                 "box_emps.png",
                 n_random=n_random,

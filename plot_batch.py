@@ -46,9 +46,12 @@ def _plot_batch(
                 pb.update(task_id=t1, completed=j + 1)
             pb.update(task_id=t2, completed=i + 1)
 
+    fonts = 14
     plt.boxplot(r2_fastcan, tick_labels=batch_size_list)
-    plt.ylabel("R2")
-    plt.xlabel("Batch Size")
+    plt.xticks(ticks=range(1, len(batch_size_list) + 1), labels=batch_size_list, fontsize=fonts)  # Change tick label font size
+    plt.yticks(fontsize=fonts)  # Change y-axis tick label font size
+    plt.ylabel("R-squared",fontsize=fonts)
+    plt.xlabel("Batch size",fontsize=fonts)
 
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
@@ -107,9 +110,9 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(1, 10, 10, dtype=int),
+                np.linspace(1, 4, 4, dtype=int),
                 100,
-                10,
+                25,
                 # np.linspace(5, 50, 10, dtype=int),
                 # 100,
                 # 2,
@@ -130,7 +133,7 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(2, 20, 10, dtype=int),
+                np.linspace(1, 10, 10, dtype=int),
                 100,
                 5,
                 n_random=n_random,
