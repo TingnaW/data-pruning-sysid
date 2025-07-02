@@ -22,4 +22,7 @@ python plot_batch.py --dataset emps --n_random 10
 echo "Running plot_sample.py...random10"
 python plot_sample.py --dataset emps --n_random 10
 
+echo "Running plot_density.py...random10"
+python plot_density.py --dataset emps
+
 echo "All scripts completed."

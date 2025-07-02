@@ -64,6 +64,8 @@ def _plot_errorbar(
             pb.update(task_id=t2, completed=i + 1)
 
     x = np.linspace(n_sample_lower, n_sample_upper, n_steps, endpoint=True)
+
+    fonts = 14
     fig, ax1 = plt.subplots()
     if twinx:
         ax2 = ax1.twinx()
@@ -74,7 +76,8 @@ def _plot_errorbar(
             color="tab:orange",
             label="Random",
         )
-        ax2.set_ylabel("R2")
+        ax2.set_ylabel("R-squared", fontsize=fonts)
+        ax2.tick_params(axis='y', labelsize=fonts)
     else:
         ax1.errorbar(
             x,
@@ -90,10 +93,13 @@ def _plot_errorbar(
         color="tab:blue",
         label="FastCan",
     )
-    fig.legend(loc="upper left", bbox_to_anchor=(0.12, 0.88))
-    ax1.set_ylabel("R2")
-    ax1.set_xlabel("Number of Samples")
+    fig.legend(loc="lower right", bbox_to_anchor=(0.88, 0.12), fontsize=fonts)
+    ax1.set_ylabel("R-squared", fontsize=fonts)
+    ax1.set_xlabel("Number of selected samples", fontsize=fonts)
     ax1.set_xticks(x)
+    ax1.tick_params(axis='x', labelsize=fonts)
+    ax1.tick_params(axis='y', labelsize=fonts)
+
     fig.savefig(figure_name, bbox_inches="tight")
     plt.close()
     print("Image " + figure_name + " has been generated.")
@@ -160,7 +166,7 @@ def main(dataset, n_random) -> None:
                 20,
                 120,
                 11,
-                10,  # No atoms for EMPS dataset
+                25,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",
                 # intercept=True,

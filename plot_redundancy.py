@@ -10,10 +10,13 @@ if __name__ == "__main__":
     # Plot raw time-sereis data
     u = np.linspace(0, 1, 100)
     y = np.sin(2 * np.pi * u)
-
+    
+    fonts = 14
     plt.plot(u, y)
-    plt.xlabel("Time (s)")
-    plt.ylabel("Amplitude")
+    plt.xlabel("Time (s)", fontsize=fonts-1)
+    plt.ylabel("Amplitude", fontsize=fonts-1)
+    # Set tick label font size
+    plt.tick_params(axis='both', labelsize=fonts-1)
     plt.xlim(0, 1)
     plt.savefig("redundancy_raw_data.png", bbox_inches="tight")
     plt.close()
@@ -26,12 +29,16 @@ if __name__ == "__main__":
 
     plt.imshow(Y_corr)
     cb = plt.colorbar()
-    cb.ax.set_title("$r$")
+    cb.ax.set_title("$r$", fontsize=fonts)
+    cb.ax.tick_params(labelsize=fonts)  # Colorbar tick label font size
+
     ticks = np.arange(0, len(time_ids), step=5)
     plt.xticks(ticks)
     plt.yticks(ticks)
-    plt.xlabel("Feature Index")
-    plt.ylabel("Feature Index")
+    # Set tick label font size
+    plt.tick_params(axis='both', labelsize=fonts)
+    plt.xlabel("Feature index", fontsize=fonts)
+    plt.ylabel("Feature index", fontsize=fonts)
     plt.savefig("redundancy_feature.png", bbox_inches="tight")
     plt.close()
 
@@ -42,8 +49,11 @@ if __name__ == "__main__":
 
     plt.scatter(pcs[:, 0], pcs[:, 1], c=u)
     cb = plt.colorbar()
-    cb.ax.set_title("Time (s)")
-    plt.xlabel("The First Principle Component")
-    plt.ylabel("The Second Principle Component")
+    cb.ax.set_title("Time (s)", fontsize=fonts)
+    cb.ax.tick_params(labelsize=fonts)  # Colorbar tick label font size
+
+    plt.xlabel("The first principle component", fontsize=fonts)
+    plt.ylabel("The second principle component", fontsize=fonts)
+    plt.tick_params(axis='both', labelsize=fonts)
     plt.savefig("redundancy_sample.png", bbox_inches="tight")
     plt.close()
