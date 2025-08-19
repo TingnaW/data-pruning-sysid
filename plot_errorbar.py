@@ -77,7 +77,7 @@ def _plot_errorbar(
             label="Random",
         )
         ax2.set_ylabel("R-squared", fontsize=fonts)
-        ax2.tick_params(axis='y', labelsize=fonts)
+        ax2.tick_params(axis="y", labelsize=fonts)
     else:
         ax1.errorbar(
             x,
@@ -97,8 +97,8 @@ def _plot_errorbar(
     ax1.set_ylabel("R-squared", fontsize=fonts)
     ax1.set_xlabel("Number of selected samples", fontsize=fonts)
     ax1.set_xticks(x)
-    ax1.tick_params(axis='x', labelsize=fonts)
-    ax1.tick_params(axis='y', labelsize=fonts)
+    ax1.tick_params(axis="x", labelsize=fonts)
+    ax1.tick_params(axis="y", labelsize=fonts)
 
     fig.savefig(figure_name, bbox_inches="tight")
     plt.close()

@@ -48,10 +48,12 @@ def _plot_batch(
 
     fonts = 14
     plt.boxplot(r2_fastcan, tick_labels=batch_size_list)
-    plt.xticks(ticks=range(1, len(batch_size_list) + 1), labels=batch_size_list, fontsize=fonts)  # Change tick label font size
+    plt.xticks(
+        ticks=range(1, len(batch_size_list) + 1), labels=batch_size_list, fontsize=fonts
+    )  # Change tick label font size
     plt.yticks(fontsize=fonts)  # Change y-axis tick label font size
-    plt.ylabel("R-squared",fontsize=fonts)
-    plt.xlabel("Batch size",fontsize=fonts)
+    plt.ylabel("R-squared", fontsize=fonts)
+    plt.xlabel("Batch size", fontsize=fonts)
 
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
