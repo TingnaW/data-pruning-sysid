@@ -45,7 +45,9 @@ def _plot_atom(
 
     fonts = 14
     plt.boxplot(r2_fastcan)
-    plt.xticks(ticks=range(1, len(n_atoms_list) + 1), labels=n_atoms_list, fontsize=fonts)  # Change tick label font size
+    plt.xticks(
+        ticks=range(1, len(n_atoms_list) + 1), labels=n_atoms_list, fontsize=fonts
+    )  # Change tick label font size
     plt.yticks(fontsize=fonts)  # Change y-axis tick label font size
     plt.ylabel("R-squared", fontsize=fonts)
     plt.xlabel("Number of atoms", fontsize=fonts)
@@ -71,10 +73,10 @@ def main(dataset, n_random) -> None:
                 y,
                 # [3, 5, 10, 15, 20, 25, 30, 50],
                 # [2, 5, 10, 15, 20, 30, 50, 70],
-                [5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 100,
                 n_random=n_random,
-                figure_name= "atom_dsed_eq.png",
+                figure_name="atom_dsed_eq.png",
                 intercept=True,
                 max_delay=4,
             )
@@ -84,7 +86,7 @@ def main(dataset, n_random) -> None:
                 u,
                 y,
                 # [2, 5, 10, 15, 20, 30, 50, 70],
-                [5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 100,
                 n_random=n_random,
                 figure_name="atom_dsed_tr.png",
@@ -97,7 +99,7 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 # [2, 5, 10, 15, 20, 30, 50, 70],
-                [5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 100,
                 n_random=n_random,
                 figure_name="atom_dsed.png",
@@ -110,7 +112,7 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 # [2, 5, 10, 15, 20, 30, 50, 70],
-                [5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 100,
                 n_random=n_random,
                 figure_name="atom_emps.png",
@@ -124,7 +126,7 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 # [2, 5, 10, 15, 20, 30, 50, 70],
-                [5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 100,
                 n_random=n_random,
                 figure_name="atom_whbm.png",

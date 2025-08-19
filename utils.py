@@ -45,6 +45,19 @@ def get_r2(coef, bench_narx):
     return r2_score(coef, bench_narx.coef_)
 
 
+def nonautonomous_dual_stable_equilibria(y, t):
+    y1, y2 = y[0], y[1]
+    u = 0.1 * np.cos(0.2 * np.pi * t)
+    dydt = [y2, -(y1**3) - y1**2 + y1 - y2 + u]
+    return dydt
+
+
+def autonomous_dual_stable_equilibria(y, t=None):
+    y1, y2 = y[0], y[1]
+    dydt = [y2, -(y1**3) - y1**2 + y1 - y2]
+    return dydt
+
+
 def get_dual_stable_equilibria_data(
     auto=False, y0=None, dur=10, n_samples=100, max_delay=10
 ):
@@ -59,21 +72,10 @@ def get_dual_stable_equilibria_data(
         Number of samples to generate for each initial condition.
     """
 
-    def _nonautonomous_dual_stable_equilibria(y, t):
-        y1, y2 = y
-        u = 0.1 * np.cos(0.2 * np.pi * t)
-        dydt = [y2, -(y1**3) - y1**2 + y1 - y2 + u]
-        return dydt
-
-    def _autonomous_dual_stable_equilibria(y, t):
-        y1, y2 = y
-        dydt = [y2, -(y1**3) - y1**2 + y1 - y2]
-        return dydt
-
     if auto:
-        func = _autonomous_dual_stable_equilibria
+        func = autonomous_dual_stable_equilibria
     else:
-        func = _nonautonomous_dual_stable_equilibria
+        func = nonautonomous_dual_stable_equilibria
 
     if y0 is None:
         n_init = 10
