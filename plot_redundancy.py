@@ -22,17 +22,17 @@ if __name__ == "__main__":
     plt.close()
 
     # Plot the redundancy in column-wise (feature-wise)
-    time_ids = make_time_shift_ids(1, 20, True)
+    time_ids = make_time_shift_ids(1, 20, False)
     Y = make_time_shift_features(y.reshape(-1, 1), time_ids)
     Y, u = mask_missing_values(Y, u)  # Mask missing values caused by time shifts
     Y_corr = np.corrcoef(Y, rowvar=False)
 
-    plt.imshow(Y_corr)
+    plt.imshow(Y_corr, extent=[1, Y_corr.shape[1], Y_corr.shape[0], 1])
     cb = plt.colorbar()
     cb.ax.set_title("$r$", fontsize=fonts)
     cb.ax.tick_params(labelsize=fonts)  # Colorbar tick label font size
 
-    ticks = np.arange(0, len(time_ids), step=5)
+    ticks = np.arange(1, len(time_ids), step=4)
     plt.xticks(ticks)
     plt.yticks(ticks)
     # Set tick label font size

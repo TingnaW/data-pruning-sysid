@@ -85,7 +85,7 @@ def _plot_pca(
     fonts = 14
     plt.xlabel("The first principle component", fontsize=fonts)
     plt.ylabel("The second principle component", fontsize=fonts)
-    plt.legend(split_labels + ["FastCan pruned", "Random pruned", "Atoms"], fontsize = fonts)
+    plt.legend(split_labels + ["FastCan", "Random", "Atoms"], fontsize = fonts)
     # Change font size of tick labels on both axes
     plt.tick_params(axis='x', labelsize=fonts)
     plt.tick_params(axis='y', labelsize=fonts)
