@@ -58,19 +58,22 @@ def _plot_density(
     mean_r2_random = np.mean(r2_random, axis=1)
     std_r2_random = np.std(r2_random, axis=1)
 
-    plt.figure()
-    plt.plot(density_percentage, mean_r2_fastcan, label="FastCan mean", marker="o")
-    plt.fill_between(
-        density_percentage,
+    # Create figure and main axis
+    fig, ax1 = plt.subplots()
+
+    # Plot on the bottom x-axis (number of samples)
+    ax1.plot(n_samples_list, mean_r2_fastcan, label="FastCan mean", marker='o')
+    ax1.fill_between(
+        n_samples_list,
         mean_r2_fastcan - std_r2_fastcan,
         mean_r2_fastcan + std_r2_fastcan,
         alpha=0.2,
         label="FastCan SD",
     )
 
-    plt.plot(density_percentage, mean_r2_random, label="Random mean", marker="x")
-    plt.fill_between(
-        density_percentage,
+    ax1.plot(n_samples_list, mean_r2_random, label="Random mean", marker='x')
+    ax1.fill_between(
+        n_samples_list,
         mean_r2_random - std_r2_random,
         mean_r2_random + std_r2_random,
         alpha=0.2,
@@ -78,12 +81,27 @@ def _plot_density(
     )
 
     fonts = 14
-    plt.xlabel("Percentage of selected samples (%)", fontsize=fonts)
-    plt.ylabel("R-squared", fontsize=fonts)
-    # Tick label font size
-    plt.tick_params(axis="both", labelsize=fonts)
-    plt.legend(fontsize=fonts)
-    plt.grid(True)
+    # Axis labels and styling
+    # Set ticks at every value in n_samples_list
+    ax1.set_xticks(n_samples_list)
+    # Set tick labels explicitly to avoid skipping (especially if auto-formatting hides some)
+    ax1.set_xticklabels([str(int(v)) for v in n_samples_list])
+    
+    ax1.set_xlabel("Number of selected samples", fontsize=fonts)
+    ax1.set_ylabel("R-squared", fontsize=fonts)
+    ax1.tick_params(axis='both', labelsize=fonts)
+    ax1.grid(True)
+    ax1.legend(fontsize=fonts)
+
+    # Top x-axis (percentage)
+    ax2 = ax1.twiny()
+    ax2.set_xlim(ax1.get_xlim())  # Match bottom x-axis
+    ax2.set_xticks(n_samples_list)
+    # ax2.set_xticklabels([f"{p:.2f}%" for p in density_percentage])
+    labels = [f"{p:.2f}" if i % 2 == 0 else "" for i, p in enumerate(density_percentage)]
+    ax2.set_xticklabels(labels)
+    ax2.set_xlabel("Percentage of selected samples (%)", fontsize=fonts)
+    ax2.tick_params(axis='x', labelsize=fonts)
 
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()

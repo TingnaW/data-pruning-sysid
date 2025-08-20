@@ -42,7 +42,8 @@ def _plot_prediction(
     plt.tick_params(axis="both", labelsize=fonts)
     plt.xlabel("Time index", fontsize=fonts)
     plt.ylabel("Amplitude", fontsize=fonts)  # Optional, if needed
-    plt.legend(fontsize=fonts)
+    plt.legend(fontsize=fonts, loc="upper right")
+    plt.tight_layout()
     plt.title(
         f"NARX prediction results (R-squared: {
             r2_score(y[:plot_n_samples], y_hat[:plot_n_samples]):.5f})",
