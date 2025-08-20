@@ -82,8 +82,15 @@ def _plot_sample(
     for col in range(r2_mean.shape[1]):
         col_max_value = r2_mean[:, col].max()
         col_max_row = np.argmax(r2_mean[:, col])
-        ax.text(col, col_max_row, f'{col_max_value:.3f}',
-                ha='center', va='center', color='black', fontsize=fonts-2)
+        ax.text(
+            col,
+            col_max_row,
+            f"{col_max_value:.3f}",
+            ha="center",
+            va="center",
+            color="black",
+            fontsize=fonts - 2,
+        )
 
     sample_ticks = np.linspace(
         n_sample_lower, n_sample_upper, n_sample_steps, endpoint=True
@@ -105,7 +112,11 @@ def _plot_sample(
 
 
 @click.command()
-@click.option("--dataset", default="dsed", help="Choose dataset from: dsed-eq, dsed-tr, dsed, emps, whbm")
+@click.option(
+    "--dataset",
+    default="dsed",
+    help="Choose dataset from: dsed-eq, dsed-tr, dsed, emps, whbm",
+)
 @click.option("--n_random", default=10, help="Set the number of random tests")
 def main(dataset, n_random) -> None:
     match dataset:
@@ -121,7 +132,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_upper=120,
                 # n_atom_steps=40,
                 # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
-                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed_eq.png",
                 n_random=n_random,
                 intercept=True,
@@ -139,7 +150,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_upper=120,
                 # n_atom_steps=40,
                 # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
-                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed_tr.png",
                 n_random=n_random,
                 intercept=True,
@@ -157,7 +168,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_upper=120,
                 # n_atom_steps=40,
                 # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
-                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_dsed.png",
                 n_random=n_random,
                 intercept=True,
@@ -177,7 +188,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_upper=1200,
                 # n_atom_steps=6,
                 # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
-                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_emps.png",
                 n_random=n_random,
                 intercept=False,
@@ -197,7 +208,7 @@ def main(dataset, n_random) -> None:
                 # n_atom_steps=6,
                 # atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
                 # atom_step=[15, 20, 25, 30, 35, 40, 45, 50],
-                atom_step=[5,10, 15, 20, 25, 30, 35, 40, 45, 50],
+                atom_step=[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
                 figure_name="sample_whbm.png",
                 n_random=n_random,
                 intercept=True,

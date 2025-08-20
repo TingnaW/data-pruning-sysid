@@ -86,7 +86,7 @@ def _plot_errorbar(
             label="Random",
         )
         ax2.set_ylabel("R-squared", fontsize=fonts)
-        ax2.tick_params(axis='y', labelsize=fonts)
+        ax2.tick_params(axis="y", labelsize=fonts)
     else:
         ax1.errorbar(
             n_samples_list,

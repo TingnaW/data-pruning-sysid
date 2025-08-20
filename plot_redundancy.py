@@ -10,13 +10,13 @@ if __name__ == "__main__":
     # Plot raw time-sereis data
     u = np.linspace(0, 1, 100)
     y = np.sin(2 * np.pi * u)
-    
+
     fonts = 14
     plt.plot(u, y)
-    plt.xlabel("Time (s)", fontsize=fonts-1)
-    plt.ylabel("Amplitude", fontsize=fonts-1)
+    plt.xlabel("Time (s)", fontsize=fonts - 1)
+    plt.ylabel("Amplitude", fontsize=fonts - 1)
     # Set tick label font size
-    plt.tick_params(axis='both', labelsize=fonts-1)
+    plt.tick_params(axis="both", labelsize=fonts - 1)
     plt.xlim(0, 1)
     plt.savefig("redundancy_raw_data.png", bbox_inches="tight")
     plt.close()
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     plt.xticks(ticks)
     plt.yticks(ticks)
     # Set tick label font size
-    plt.tick_params(axis='both', labelsize=fonts)
+    plt.tick_params(axis="both", labelsize=fonts)
     plt.xlabel("Feature index", fontsize=fonts)
     plt.ylabel("Feature index", fontsize=fonts)
     plt.savefig("redundancy_feature.png", bbox_inches="tight")
@@ -54,6 +54,6 @@ if __name__ == "__main__":
 
     plt.xlabel("The first principle component", fontsize=fonts)
     plt.ylabel("The second principle component", fontsize=fonts)
-    plt.tick_params(axis='both', labelsize=fonts)
+    plt.tick_params(axis="both", labelsize=fonts)
     plt.savefig("redundancy_sample.png", bbox_inches="tight")
     plt.close()

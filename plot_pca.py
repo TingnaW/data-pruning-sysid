@@ -53,27 +53,33 @@ def _plot_pca(
 
     if split_labels is None:
         split_labels = ["All data"]
-        
+
     if isinstance(split_point, str):
         if split_point == "dsed-eq":
-            mask = np.arange((100 - narx.max_delay_) * 100) < (100 - narx.max_delay_) * 98
+            mask = (
+                np.arange((100 - narx.max_delay_) * 100) < (100 - narx.max_delay_) * 98
+            )
 
         elif split_point == "dsed-tr":
             mask = np.arange((1000 - narx.max_delay_) * 2)
             mask = (mask < 100) | (
-                (mask > (1000 - narx.max_delay_)) & (mask < (1000 - narx.max_delay_) + 100)
+                (mask > (1000 - narx.max_delay_))
+                & (mask < (1000 - narx.max_delay_) + 100)
             )
-        plt.scatter(
-            pcs_all[mask, 0], pcs_all[mask, 1], s=50, marker="o", c="tab:blue"
-        )
+        plt.scatter(pcs_all[mask, 0], pcs_all[mask, 1], s=50, marker="o", c="tab:blue")
         plt.scatter(
             pcs_all[~mask, 0], pcs_all[~mask, 1], s=50, marker="o", c="tab:purple"
         )
     else:
         plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=50, marker="o", c="tab:blue")
-        
+
     plt.scatter(
-        pcs_fastcan[:, 0], pcs_fastcan[:, 1], s=30, marker="o", alpha=0.9, c="tab:orange"
+        pcs_fastcan[:, 0],
+        pcs_fastcan[:, 1],
+        s=30,
+        marker="o",
+        alpha=0.9,
+        c="tab:orange",
     )
     plt.scatter(
         pcs_random[:, 0], pcs_random[:, 1], s=20, marker="*", alpha=0.9, c="tab:green"
@@ -87,8 +93,8 @@ def _plot_pca(
     plt.ylabel("The second principle component", fontsize=fonts)
     plt.legend(split_labels + ["FastCan", "Random", "Atoms"], fontsize = fonts)
     # Change font size of tick labels on both axes
-    plt.tick_params(axis='x', labelsize=fonts)
-    plt.tick_params(axis='y', labelsize=fonts)
+    plt.tick_params(axis="x", labelsize=fonts)
+    plt.tick_params(axis="y", labelsize=fonts)
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
     print("Image " + figure_name + " has been generated.")
